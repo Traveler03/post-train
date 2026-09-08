@@ -24,7 +24,7 @@ AutoTask 根据用户预设规则，在定时或事件触发后检查环境并�
 - 存在合理干扰信息，模型需要依据条件判断。
 - 要求执行的操作必须有实际工具结果，不能只看承诺性回复。
 
-来源：[AutoTask Pipeline](https://app.notion.com/p/3c2b2f39aba580919766c116e0089bed)。
+来源：[AutoTask 全流程原文](../../source-snapshot/milly/docs/rq3w/07_worldgen全流程详解_0820.md)。该版本包含后续更新（包括每条规则最多 30 道、2,025→1,637 的筛选），与早期 2,025 个环境口径分开阅读。
 
 ## 3. 已记录批次
 
@@ -51,7 +51,7 @@ AutoTask 根据用户预设规则，在定时或事件触发后检查环境并�
 
 对应实现检查 token 前缀、监督位置和结构假设。数据表示对应不保证完整训练动态相同；每步监督 token、batch 和更新次数仍需重新核算。
 
-来源：[训练数据结构与优化记录](https://git.garena.com/beeai/algo/post-train/-/blob/milly/docs/rq3w/04_训练数据长什么样_0819.md)。
+来源：[训练数据结构与优化记录原文](../../source-snapshot/milly/docs/rq3w/04_训练数据长什么样_0819.md)。
 
 ## 5. AutoTask 效果候选
 
@@ -60,7 +60,7 @@ AutoTask 根据用户预设规则，在定时或事件触发后检查环境并�
 | User | 62.60% | 73.60% | +11.00pp |
 | Official | 71.00% | 75.48% | +4.48pp |
 
-来源：[AutoTask 效果报告](https://app.notion.com/p/3bbb2f39aba580df8958fd2f9cb3934d)。
+来源：[AutoTask 效果报告原文](../source-materials/notion/autotask-results.md)。
 
 该表属于页面标注的 1,425 条 Low Thinking 数据对比，与前述 1,281 条整轨迹批次尚未建立对应关系。页面段落中的“3.5pp”与表内差值不一致，此处采用表内数值相减。
 
@@ -72,13 +72,13 @@ AutoTask 根据用户预设规则，在定时或事件触发后检查环境并�
 - 按实际来源检查训练／评测隔离。
 - 将“环境是否有效”“任务是否完成”“轨迹是否值得模仿”分开判断。
 
-## 7. 实现索引
+## 7. 本地实现
 
-- [流水线说明](https://git.garena.com/beeai/algo/post-train/-/blob/milly/tools/autotask_pipeline/README.md)
-- [规则与来源抽取](https://git.garena.com/beeai/algo/post-train/-/blob/milly/tools/autotask_pipeline/extract_source.py)
-- [时间审计](https://git.garena.com/beeai/algo/post-train/-/blob/milly/tools/autotask_pipeline/audit_seed_time_contract.py)
-- [文件身份审计](https://git.garena.com/beeai/algo/post-train/-/blob/milly/tools/autotask_pipeline/audit_drive_identity.py)
-- [轨迹收割](https://git.garena.com/beeai/algo/post-train/-/blob/milly/tools/autotask_pipeline/harvest_select.py)
-- [SFT 渲染](https://git.garena.com/beeai/algo/post-train/-/blob/milly/tools/autotask_pipeline/render_sft.py)
+- [流水线说明](../../source-snapshot/milly/tools/autotask_pipeline/README.md)
+- [规则与来源抽取](../../source-snapshot/milly/tools/autotask_pipeline/extract_source.py)
+- [时间审计](../../source-snapshot/milly/tools/autotask_pipeline/audit_seed_time_contract.py)
+- [文件身份审计](../../source-snapshot/milly/tools/autotask_pipeline/audit_drive_identity.py)
+- [轨迹收割](../../source-snapshot/milly/tools/autotask_pipeline/harvest_select.py)
+- [SFT 渲染](../../source-snapshot/milly/tools/autotask_pipeline/render_sft.py)
 
 自定义规则的 8-gram Jaccard 检查阈值为 0.70；这是一种文本近似检查，不保证语义层面完全无重合。官方模板共享题面时，需要独立环境及相应的泛化定义。
