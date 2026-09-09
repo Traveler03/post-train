@@ -1,0 +1,9 @@
+{
+  "window": 98304,
+  "n_windows": 1102,
+  "n_samples": 1102,
+  "samples_per_window_mean": 1.0,
+  "max_segments": 1,
+  "fill": 0.6957432446303832,
+  "algo": "best_fit_decreasing"
+}

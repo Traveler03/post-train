@@ -1,0 +1,73 @@
+{
+  "出处": {
+    "源文件": "/home/work/migoo_ai_post-train/lsy/main/v1/pro_chain_sft_v2/v2.jsonl.gz",
+    "源文件 SHA256": "7e5143a7d5d3aba1b7e6fa4ec549810f0749fa17c682c267fceabce907097fc3",
+    "源文件认得出吗": "⚠️ 不在已知清单里(上游换文件了?)",
+    "源文件大小": 107944221,
+    "模型目录": "/home/work/migoo_ai_public/posttrain/post-train/models/DeepSeek-V4-Flash-0731",
+    "分词/编码器指纹": {
+      "config.json": "6c8f3d2d3b487075",
+      "tokenizer.json": "8f9f37ca37fdc4f5",
+      "tokenizer_config.json": "6ac8c8dc065ed118",
+      "encoding/encoding_dsv4.py": "abc0d26120250dda"
+    },
+    "转换脚本 git commit": "?",
+    "转换脚本 SHA256": "d76deaf5a01aabbb"
+  },
+  "源文件": "/home/work/migoo_ai_post-train/lsy/main/v1/pro_chain_sft_v2/v2.jsonl.gz",
+  "模型": "/home/work/migoo_ai_public/posttrain/post-train/models/DeepSeek-V4-Flash-0731",
+  "thinking_mode": "thinking",
+  "reasoning_effort 参数": "source",
+  "实际渲染档位分布": {},
+  "src_format": "v",
+  "读入": 1149,
+  "留下": 1134,
+  "丢弃原因": {
+    "超长(>98304)": 15
+  },
+  "切分": {
+    "方式": "按 rule_head 整组切",
+    "seed": 0,
+    "train/val 共享的任务组数(必须为 0)": 0
+  },
+  "各 split": {
+    "train": {
+      "样本数": 1102,
+      "任务(rule_head)组数": 1102,
+      "token 总数": 75370567,
+      "长度 p50/p90/max": [
+        67541,
+        80830,
+        98297
+      ],
+      "进 loss 的 token 占比": 0.0502,
+      "每样本进 loss 的 token 数 p50/max": [
+        2295,
+        18334
+      ]
+    },
+    "val": {
+      "样本数": 32,
+      "任务(rule_head)组数": 32,
+      "token 总数": 2202436,
+      "长度 p50/p90/max": [
+        65880,
+        83431,
+        95510
+      ],
+      "进 loss 的 token 占比": 0.0631,
+      "每样本进 loss 的 token 数 p50/max": [
+        3153,
+        15293
+      ]
+    }
+  },
+  "产物指纹": {
+    "train.bin": "850e03660694461e",
+    "train.mask.bin": "caf3914025101aa0",
+    "train.idx.npy": "022dd1b091f0e353",
+    "val.bin": "dc7d87f2760285d0",
+    "val.mask.bin": "1834c32698c94cf6",
+    "val.idx.npy": "f3ee25a5d6270c82"
+  }
+}

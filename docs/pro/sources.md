@@ -44,6 +44,17 @@ AutoTask Pipeline 的早期 Notion 页没有稳定导出文件；仓库内保存
 
 原始记录提到的 `gen_gap_queries.py` 未在上传快照中找到。相关流程以项目记录为证据，未声称代码已被逐行检查。
 
+## Pro v7 数据产物
+
+| 文件 | 支持内容 |
+|---|---|
+| [产物说明](../source-materials/artifacts/pro-v7/README.md) | 规模、切分、token、监督段、窗口结果与证据边界 |
+| [meta.json](../source-materials/artifacts/pro-v7/meta.json) | 上游文件指纹、转换参数、过滤原因和 split 统计 |
+| [train.windows_meta.json](../source-materials/artifacts/pro-v7/train.windows_meta.json) | 训练窗口数、样本数、填充率和打包算法 |
+| [val.windows_meta.json](../source-materials/artifacts/pro-v7/val.windows_meta.json) | 验证窗口数、样本数、填充率和打包算法 |
+
+下载的 `val.jsonl` 仅用于本地结构抽查，未提交：它包含完整内部 system prompt、工具 schema 和测试账号信息。抽查结论已写入产物说明。
+
 ## AutoTask 本地源码
 
 - [训练数据结构与优化记录](../../source-snapshot/milly/docs/rq3w/04_训练数据长什么样_0819.md)
