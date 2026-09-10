@@ -19,10 +19,11 @@
 | 层次 | 数据／训练 | 可引用效果 | 正确用途 |
 |---|---|---|---|
 | 历史 v7／`pc7` | v2 数据，1,134 条；2 epoch，checkpoint `s27`～`s270` | `s162` 首次读数 Drive 87.4%、Docs 83.3%、Slides 83.0%；三次复测范围分别为 80.1%～87.4%、79.2%～83.3%、76.1%～83.0% | 讲 checkpoint 选择、评测波动和版本迭代 |
+| v2.1／`pc8` | Notion 记录去除 v2 的 grad norm 尖峰数据；删除数量未记录 | `s75` 单次读数 Drive 83.8%、Docs 83.8%、Slides 78.7% | 讲训练反馈驱动的数据过滤实验，不作严格因果消融 |
 | 0827 milly 复跑 | 同 v2 数据与历史 v7 配方；实际完成 276 步 | 当前没有对应端到端评测；日志证明训练链路可复跑 | 讲实际训练配置、稳定性、吞吐和 checkpoint 产出 |
 | Pro 项目最终汇总 | 后续还包含 v2.1、v2.2、v3、v3.1 等迭代 | Drive／Docs／Slides 相对 DS Low 为 +4.93／+5.03／+3.22pp | 讲项目总体业务效果 |
 
-历史 v7 的 `s162` 三次结果波动明显，且同期底座自身也有漂移。因此不从一次 `s162` 读数计算一个“确定提升”，而是把它作为 checkpoint 选择案例；最终提升使用项目汇总表的统一口径。
+历史 v7 的 `s162` 三次结果波动明显，均值为 Drive 83.7%、Docs 81.5%、Slides 79.0%；`pc8_s75` 单次相对该均值为 +0.1／+2.3／-0.3pp，更接近持平。由于 pc8 没有同样的三次复测，checkpoint、epoch 和完成题数也不完全一致，不能断言过滤带来提升或下降。最终提升使用项目汇总表的统一口径。
 
 版本读数来源是[Pro 流程原文](../source-materials/notion/pro-flow.md)中的历史 checkpoint 总表、`s162` 三次复测和 v2.1 对照截图；当前复跑配置来源是[v7 启动脚本](../../source-snapshot/milly/training/scripts/dsv4/launch_prochain_v7_milly_0827.sh)与[实际训练日志](../source-materials/artifacts/pro-v7/training-run/train.log)。
 
@@ -73,6 +74,7 @@ Pro 报告显示总体改善并不均匀：
 |---|---|---|---|---|---|---|
 | Drive／Docs／Slides 总体结果 | Pro 多版本迭代 | 原始报告统一口径 | 未给单一 checkpoint | DS Low | DS_Posttrain | 项目最终结果，不强绑 v7 |
 | 历史 v7／`pc7` | v2，1,134 条 | 98k、r16、约 2 epoch | `s162` 等 | 同期 base0827 多次 run | `pc7_s162` 三次 | 版本效果已定位，存在明显 run 波动 |
+| v2.1／`pc8` | v2 去除 grad norm 尖峰数据，规模未记录 | 未完整记录 | `s75` 等 | `pc7` 仅作参考 | `pc8_s75` 单次 | 过滤动作与版本结果已定位，不是严格 A/B |
 | Pro v7 milly 0827 复跑 | `pro_chain_sft_v2/v2.jsonl.gz` → train 1,102 | 98k、r16、276 steps、2.0036 epoch | step 276，日志确认保存 | 未跑 | 未跑 | 数据→训练→checkpoint 已绑定，用于工程复现 |
 
 ## 8. 成果表述

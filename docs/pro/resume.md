@@ -6,24 +6,24 @@
 
 效果数字取自已记录的 Pro 项目最终结果。v7 已完成“读入 1,149 → train 1,102／val 32 → 276 步训练 → step 276 checkpoint”的工程绑定；历史 `pc7_s162` 也有版本级评测和三次复测。Drive／Docs／Slides 的 +4.93／+5.03／+3.22pp 来自包含后续 v2.1～v3.1 迭代的项目统一口径，不写成 v7 step 276 的单点效果，也不用 AutoTask 数字代替 Pro 指标。
 
-## 四条展开版
+## 推荐投递版（四条）
 
-### Pro 主链路 Agent 数据建设与后训练
+### Pro 主链路 Agent 数据合成与 LoRA SFT｜DeepSeek-V4-Flash、Megatron-Bridge
 
-面向邮件、日历及 Drive／Docs／Slides 等个人办公场景，独立负责 Pro 主链路的数据建设与 LoRA SFT 流程，优化多轮工具调用、复杂任务执行及授权判断能力。
+面向邮件、日历及 Drive／Docs／Slides 等个人办公场景，独立负责 Pro 主链路的数据合成与 LoRA SFT，优化多轮工具调用、复杂任务执行及授权判断能力。
 
-- **训练数据建设：** 分析线上执行轨迹的任务分布、工具覆盖与失败模式，完成主 Agent 行为归属、当前轮轨迹抽取及质量筛选；针对文档编辑、演示文稿操作和权限管理等低覆盖能力，基于可执行环境合成任务，通过多轮 Rollout 与 LLM 判官拒绝采样构建训练数据。
-- **行为与质量设计：** 围绕工具选择、参数正确性、真实执行和结果交付设计筛选标准，构造“明确授权后执行”和“未授权高风险操作前确认”等情境，并对齐工具版本、文件身份及上下文依赖，减少无效轨迹和错误监督。
-- **LoRA SFT 实现：** 基于 Megatron-Bridge 独立搭建 DeepSeek MoE 的 LoRA SFT 流程，支持约 98k 长上下文训练；完成工具调用格式、历史轮 loss mask、结束标记及 LoRA 挂载适配，采用整轨迹渲染减少逐轮重复前缀，并实现支持分段隔离的窗口化数据格式；v7 实际完成 276 步、约 2 epoch，最终 checkpoint 保存成功。
-- **模型效果：** 在已记录的同 Low Thinking 档位评测中，后训练模型在 Drive／Docs／Slides 上的通过率分别提升 4.93／5.03／3.22 个百分点。
+- **数据合成与筛选：** 分析线上轨迹的任务分布、工具覆盖和失败模式，完成主 Agent 行为归属与当前请求抽取；针对文档编辑、Slides 操作和权限管理等低覆盖能力，复用可执行环境构造任务，经多轮 Rollout、规则校验与 LLM 判官拒绝采样生成训练轨迹。
+- **多轮监督建模：** 设计 `messages / tools / sup` 训练格式，区分 system、用户、历史 assistant、工具返回与当前目标动作，处理工具调用—返回配对、历史轮 loss mask 和结束标记；v7 全量校验 1,102 条训练样本、6,134 个受监督 assistant 段，监督角色与 mask 无错位。
+- **长上下文 LoRA SFT：** 基于 Megatron-Bridge 适配 DeepSeek MoE，在 43 层 MLA 注意力的 Q down/up、KV 和输出投影挂载 LoRA，仅训练 38.4M 参数（0.09%）；结合 98,304 token 窗口、CP=4、EP=8、激活重计算和整轨迹编码完成 v7 训练，实际运行 276 步、约 2 个 epoch，并保存最终 checkpoint。
+- **训练反馈驱动数据选择：** 结合 grad norm spike、跨 epoch 复现性与轨迹语义定位可疑样本，构建去 spike 数据的 v2.1／pc8 并进行多 checkpoint 评测；识别单次评测波动后，将梯度异常作为排查信号而非机械过滤规则。项目经后续多版本迭代，同 Low Thinking 口径下 Drive／Docs／Slides 通过率分别提升 4.93／5.03／3.22pp。
 
 ## 三条紧凑版
 
 ### Pro 个人办公助手后训练
 
-- 独立搭建 Pro Agent 数据与 LoRA SFT 流程；分析线上任务和工具覆盖，结合真实轨迹清洗、可执行任务合成及拒绝采样，补齐复杂办公操作与授权判断场景。
-- 基于 Megatron-Bridge 实现 DeepSeek MoE 的长上下文 LoRA SFT，处理工具 schema、多轮监督掩码与 LoRA 挂载，结合整轨迹渲染和分段窗口格式优化训练输入。
-- 在已记录的同 Low Thinking 档位评测中，Drive／Docs／Slides 通过率分别提升 4.93／5.03／3.22 个百分点。
+- 独立搭建 Pro Agent 数据合成与 LoRA SFT 链路，结合线上轨迹清洗、可执行环境任务合成、多轮 Rollout 和拒绝采样，补齐复杂办公操作与授权判断场景。
+- 基于 Megatron-Bridge 完成 DeepSeek MoE 的 98k 长上下文 LoRA SFT，设计多轮监督 mask 与工具调用格式，仅训练 38.4M 参数；v7 使用 1,102 条样本完成 276 步、约 2 个 epoch 的训练并产出 checkpoint。
+- 结合 grad norm spike、跨 epoch 复现性与轨迹语义构建 v2.1／pc8 过滤实验，通过多 checkpoint 评测将训练反馈用于数据取舍；项目经后续迭代，Drive／Docs／Slides 通过率提升 4.93／5.03／3.22pp。
 
 ## 30 秒开场
 

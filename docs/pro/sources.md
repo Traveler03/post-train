@@ -16,7 +16,7 @@
 
 | 原始材料 | 支持内容 |
 |---|---|
-| [Pro 流程梳理和训练记录](../source-materials/notion/pro-flow.md) | 工具空间、历史结构、请求边界、数据质量、版本迭代；内含 27 张本地实验截图 |
+| [Pro 流程梳理和训练记录](../source-materials/notion/pro-flow.md) | 工具空间、历史结构、请求边界、数据质量、版本迭代；明确记录 v2.1 删除 v2 的 grad norm 尖峰数据并训练 pc8，内含 27 张本地实验截图 |
 | [Pro 评测结果汇总](../source-materials/notion/pro-benchmark-summary.md) | P0、邮件、日历、Drive、Docs、Sheets、Slides 等汇总表 |
 | [Pro 后训练效果与方法](../source-materials/notion/pro-results.md) | Drive／Docs／Slides 分数、目标工具覆盖、缺口合成、授权情境 |
 | [AutoTask 效果报告](../source-materials/notion/autotask-results.md) | User／Official 评测效果、数据版本与清洗记录 |
@@ -68,6 +68,13 @@ AutoTask Pipeline 的早期 Notion 页没有稳定导出文件；仓库内保存
 | [checkpoint 元数据](../source-materials/artifacts/pro-v7/training-run/checkpoint.metadata) | 43 层四类 LoRA target 的 344 个 adapter tensor key |
 
 下载的 `train.jsonl` 同样未提交；其原文约 304 MiB，且启发式扫描命中潜在私密标识。step 276 的本地 checkpoint 权重 shard 为 0 字节，也未提交；元数据和日志能证明服务器端产出，但不能用于本地恢复权重。
+
+## Spike 数据过滤证据边界
+
+- [Notion 原文](../source-materials/notion/pro-flow.md#v2)记录：“v2.1 去掉 v2 里面的 grad norm 尖峰数据（pc8）”。
+- [pc7 checkpoint 总表](../source-materials/notion/pro-flow-assets/image%208.png)记录过滤前版本各 checkpoint；[pc7 三次复测](../source-materials/notion/pro-flow-assets/image%209.png)显示 `s162` 存在明显波动。
+- [pc8 checkpoint 评测图](../source-materials/notion/pro-flow-assets/image%2014.png)记录过滤后版本多个 checkpoint；其中 `pc8_s75` 为 Drive 83.8%、Docs 83.8%、Slides 78.7%。
+- 当前没有找到 spike step 到样本 ID 的过滤清单、删除数量、过滤脚本、pc8 训练日志、pc8 多次复测或完整同配方消融。现有材料足以证明这项版本迭代发生过，但不足以复原样本级处理过程，也不足以声称过滤导致提升或退化。
 
 ## AutoTask 本地源码
 
