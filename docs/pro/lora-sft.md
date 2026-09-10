@@ -4,7 +4,7 @@
 
 独立搭建从执行轨迹到 LoRA SFT 的数据与训练流程，包括消息转换、监督掩码、序列处理、LoRA 适配、训练配置与 checkpoint 产出。
 
-当前材料中可核验的训练入口基于 Megatron-Bridge，模型目录标签为 DeepSeek-V4-Flash-0731。具体参数按启动脚本和实际运行日志区分。
+本次 Pro v7 的启动脚本与实际训练日志均基于 Megatron-Bridge，模型目录标签为 DeepSeek-V4-Flash-0731。日志已确认 276 步完整运行和最终 checkpoint 保存；效果仍需与独立评测 run 绑定。
 
 ## 2. 多轮监督目标
 
@@ -56,7 +56,7 @@ Loss 下降不能证明这些转换正确；需要直接检查渲染结果和监
 
 设置 `LORA_TARGET_MLP=1` 才额外加入 `linear_fc1` 和 `linear_fc2`。Router 未出现在此目标列表中。
 
-不能从“使用 MoE＋LoRA”推定所有专家或 router 都被训练。最终还需核对环境变量、实际 adapter 列表及可训练参数。
+不能从“使用 MoE＋LoRA”推定所有专家或 router 都被训练。实际 v7 日志报告 38,395,904 个可训练参数，占 0.09%；step 276 checkpoint 元数据覆盖第 0～42 层，四类 target 各有 43 组 `linear_in`／`linear_out` 权重。这确认了本次运行的 adapter 实际挂载。
 
 一个实际适配点是：普通模型常见的 `linear_qkv` 名称不适用于该 MLA 结构。启动成功不代表所有预期层都挂载了 adapter。
 
@@ -114,6 +114,25 @@ Token 前缀与监督位置对应，不等于完整训练动态必然相同。Ba
 
 并行维度存在重叠关系，不应直接将 TP、PP、EP、CP 全部相乘推算 GPU 数。LoRA 减少可训练参数和相应优化器状态，但长序列激活仍然昂贵；CP、Packing 与重计算分别解决不同部分的问题。
 
+### v7 实际训练结果
+
+[训练运行证据](../source-materials/artifacts/pro-v7/training-run/README.md)补齐了脚本之外的实际运行记录：
+
+| 项目 | 结果 |
+|---|---:|
+| 完成步数 | 276 / 276 |
+| 累计消费样本 | 2,208（约 2.0036 epoch） |
+| 首步／末步 loss | 0.4368／0.3475 |
+| 全程 mean／min loss | 0.4608／0.2717 |
+| skipped／NaN iteration | 0／0 |
+| 稳态 step time p50／p95 | 23.61／27.585 秒 |
+| 稳态吞吐 | 约 0.331 samples/s、4,066 padded tokens/s/GPU |
+| checkpoint | 27 步间隔保存，最终 step 276 成功 |
+
+训练全程没有 NaN 或跳步，能够确认数值上稳定跑完。loss 对样本高度敏感，最后 10 步滚动均值为 0.4428，前 25 步均值 0.4273、后 25 步均值 0.4775，不能从该曲线声称单调收敛。grad norm 中位数 0.166，但有 29 次超过 1.66 的尖峰、最大 886.158；这些尖峰没有中断训练，仍应在样本级诊断或 checkpoint 评测中复核。
+
+训练日志证明服务器成功保存 step 276；本地下载包中的权重 shard 为 0 字节，所以目前不能从仓库恢复 adapter。仓库保留了 checkpoint 元数据，用于核验 adapter key，而没有假装上传完整权重。
+
 ## 7. 数据切分的实际边界
 
 代码按选定 group 切 train／val。OpenAI 路径优先采用 question／iid，再回退 meta.rule_head；另一条路径优先采用 meta.rule_head／trace_id。
@@ -124,4 +143,4 @@ Token 前缀与监督位置对应，不等于完整训练动态必然相同。Ba
 
 已运行仓库原有 `test_render_modes.py`，19 项测试通过，覆盖初始化应答排除、前缀和 mask 异常检测、reasoning_effort 透传、整轮截断。
 
-测试使用假编码器，不加载真实模型；本次没有重跑 GPU 训练或完整数据转换。源码与测试位置见[证据索引](sources.md)。
+测试使用假编码器，不加载真实模型；本次没有重跑 GPU 训练或完整数据转换。新增材料是训练服务器的原始日志、指标和 checkpoint 元数据，不等于本机复现。源码与测试位置见[证据索引](sources.md)。

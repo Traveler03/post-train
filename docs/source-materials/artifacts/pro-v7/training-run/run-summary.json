@@ -1,0 +1,77 @@
+{
+  "run_name": "out_prochain_v7_r16_98k_2ep_save0p2ep_0827_milly",
+  "launched_at": "2026-08-27 09:49:27",
+  "first_metric_at": "2026-08-27 10:31:19",
+  "last_metric_at": "2026-08-27 13:00:22",
+  "training_done_at": "2026-08-27 13:00:49",
+  "model_label": "DeepSeek-V4-Flash-0731",
+  "framework": "Megatron-Bridge",
+  "train_records": 1102,
+  "sequence_length": 98304,
+  "world_size": 8,
+  "parallelism": {
+    "tp": 1,
+    "pp": 1,
+    "ep": 8,
+    "cp": 4
+  },
+  "batch": {
+    "global": 8,
+    "micro": 1
+  },
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "targets": [
+      "linear_q_down_proj",
+      "linear_q_up_proj",
+      "linear_kv_proj",
+      "linear_proj"
+    ],
+    "trainable_parameters": 38395904,
+    "trainable_percentage": 0.09,
+    "checkpoint_adapter_tensor_keys": 344,
+    "layers": {
+      "min": 0,
+      "max": 42,
+      "count": 43
+    }
+  },
+  "optimization": {
+    "learning_rate": 0.0001,
+    "minimum_learning_rate": 0.00001,
+    "train_steps": 276,
+    "consumed_samples": 2208,
+    "epochs": 2.0036297640653356,
+    "activation_recompute": "full",
+    "packed": true,
+    "seed": 42
+  },
+  "loss": {
+    "first": 0.4367845,
+    "last": 0.3475069,
+    "minimum": 0.2717369,
+    "minimum_step": 133,
+    "mean": 0.4608109235507246,
+    "rolling_mean_last_10": 0.44282014
+  },
+  "stability": {
+    "skipped_iterations": 0,
+    "nan_iterations": 0,
+    "grad_norm_median": 0.166,
+    "grad_norm_maximum": 886.158,
+    "grad_norm_spikes_over_1_66": 29
+  },
+  "steady_performance": {
+    "step_time_p50_seconds": 23.61,
+    "step_time_p95_seconds": 27.585,
+    "samples_per_second": 0.3309137807002882,
+    "padded_tokens_per_second_per_gpu": 4066.268537245142,
+    "model_tflops_per_gpu": 463.02913907284767
+  },
+  "checkpoint_steps": [27, 54, 81, 108, 135, 162, 189, 216, 243, 270, 276],
+  "final_checkpoint_saved": true,
+  "local_checkpoint_weight_shard_complete": false
+}
+

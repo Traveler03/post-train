@@ -122,7 +122,9 @@ Pro 记录提到不同账号或灰度环境可能返回不同工具形态，例�
 
 验证集结构抽查显示，每条包含 7～34 条消息，中位数 16；直接监督的 assistant 段为 2～12 个，中位数 5。`sup` 与消息逐项对应，工具返回和用户输入不进入直接监督。这为多轮 SFT 结构提供了产物级证据。
 
-这里的“v7”是训练数据产物目录名，而元信息显示其上游文件属于 `pro_chain_sft_v2/v2.jsonl.gz`。该源文件未被转换器识别为已知清单，转换脚本 commit 和样本 trace 元信息也缺失，因此不能仅凭这批产物完成合成来源与评测结果绑定。
+最终送入训练的 `train.jsonl` 也已做全量结构检查：1,102 条全部可解析，每条 5～52 条消息，中位数 15；共有 6,134 个直接监督段，全部属于 assistant，且 `sup` 与消息长度无一不一致。每条携带 32 或 35 个工具 schema，合计出现 41 个不同工具名。原始 JSONL 含内部 Prompt、工具 schema 和测试账号样式信息，未提交；[聚合统计](../source-materials/artifacts/pro-v7/training-run/train-structure.json)已纳入仓库。
+
+这里的“v7”是训练轮次／运行配方名，而元信息显示其上游数据文件属于 `pro_chain_sft_v2/v2.jsonl.gz`。最终 JSONL 的五个 `meta` 字段在 1,102 条中全部为空，加上转换脚本 commit 缺失，仍不能逐样本回溯合成 seed、Rollout 和判官结果。训练日志现已把这批数据绑定到 step 276 checkpoint，但该 checkpoint 还未绑定到 Drive／Docs／Slides 的汇总评测 run。
 
 ## 8. 待进一步核验
 

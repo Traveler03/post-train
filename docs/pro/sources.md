@@ -7,8 +7,8 @@
 - **个人职责：** 用户明确确认，整个数据合成及 LoRA SFT 过程均由本人搭建。
 - **实现与配置：** 依据用户提供的 GitLab `main`／`milly` ZIP 快照；相关文件已纳入本仓库。
 - **项目过程与效果：** 依据 Notion 导出原文、文字表格和实验截图；相关材料已纳入本仓库。
-- **本次验证：** 有限的现有离线测试，没有 GPU 训练或线上评测复跑。
-- **待补关联：** 部分数据版本、checkpoint 和评测结果尚未绑定。
+- **本次验证：** 有限的现有离线测试；新增训练服务器原始日志和指标的离线核验，没有在本机重跑 GPU 训练或线上评测。
+- **待补关联：** v7 数据已绑定到训练 run 和 step 276 checkpoint；该 checkpoint 与汇总评测结果尚未绑定。
 
 代码快照缺少 Git 作者历史；这不推翻本人已经确认的职责，只限制本次用提交记录进一步核验。
 
@@ -55,6 +55,20 @@ AutoTask Pipeline 的早期 Notion 页没有稳定导出文件；仓库内保存
 
 下载的 `val.jsonl` 仅用于本地结构抽查，未提交：它包含完整内部 system prompt、工具 schema 和测试账号信息。抽查结论已写入产物说明。
 
+## Pro v7 训练运行
+
+| 文件 | 支持内容 |
+|---|---|
+| [训练运行说明](../source-materials/artifacts/pro-v7/training-run/README.md) | 数据到训练、实际配置、训练动态、checkpoint 和证据边界 |
+| [原始 train.log](../source-materials/artifacts/pro-v7/training-run/train.log) | 276 步日志、LoRA 可训练参数、checkpoint 成功记录 |
+| [逐步 metrics.csv](../source-materials/artifacts/pro-v7/training-run/metrics.csv) | loss、学习率、grad norm、耗时与吞吐 |
+| [训练曲线](../source-materials/artifacts/pro-v7/training-run/sft_metrics.png) | 六类指标可视化 |
+| [结构统计](../source-materials/artifacts/pro-v7/training-run/train-structure.json) | 1,102 条 train JSONL 的消息、监督、工具和 meta 聚合统计 |
+| [运行摘要](../source-materials/artifacts/pro-v7/training-run/run-summary.json) | 可机器读取的配置、性能和 checkpoint 摘要 |
+| [checkpoint 元数据](../source-materials/artifacts/pro-v7/training-run/checkpoint.metadata) | 43 层四类 LoRA target 的 344 个 adapter tensor key |
+
+下载的 `train.jsonl` 同样未提交；其原文约 304 MiB，且启发式扫描命中潜在私密标识。step 276 的本地 checkpoint 权重 shard 为 0 字节，也未提交；元数据和日志能证明服务器端产出，但不能用于本地恢复权重。
+
 ## AutoTask 本地源码
 
 - [训练数据结构与优化记录](../../source-snapshot/milly/docs/rq3w/04_训练数据长什么样_0819.md)
@@ -76,7 +90,5 @@ AutoTask Pipeline 的早期 Notion 页没有稳定导出文件；仓库内保存
 ## 后续最有价值的补充
 
 1. Pro 最终数据集版本、组成与来源清单。
-2. 对应实验的实际可训练参数和运行配置。
-3. 结果表对应的 checkpoint、对照 run、微调 run 及每轮分数。
-4. Pro 自身的打包和 GPU 耗时统计。
-5. 本人最熟悉的失败复盘，以及相关修改位置。
+2. 结果表对应的 checkpoint、对照 run、微调 run 及每轮分数。
+3. 本人最熟悉的失败复盘，以及相关修改位置。

@@ -2,6 +2,8 @@
 
 本目录保存从训练服务器下载的 Pro v7 数据转换元信息。二进制 token、mask 和 NumPy 索引未纳入仓库；它们体积较大，对面试证据的增益有限。
 
+对应的实际训练日志、逐步指标、曲线和 step 276 checkpoint 元数据见[训练运行证据](training-run/README.md)。
+
 ## 可核验结论
 
 - 上游源文件：`pro_chain_sft_v2/v2.jsonl.gz`，SHA-256 为 `7e5143a7d5d3aba1b7e6fa4ec549810f0749fa17c682c267fceabce907097fc3`。
@@ -24,3 +26,5 @@
 ## 证据边界
 
 `meta.json` 同时记录了三项待核问题：源文件“不在已知清单”、转换脚本 Git commit 为 `?`、实际渲染档位分布为空。因此这些文件能证明最终数据形态与规模，但还不能把每条样本绑定到合成 seed、Rollout、判官结果或最终评测 run。
+
+训练侧现已通过日志绑定到 v7 配方和最终 step 276；Drive／Docs／Slides 汇总效果仍没有对应的评测 run 标识，不能自动归到这个 checkpoint。

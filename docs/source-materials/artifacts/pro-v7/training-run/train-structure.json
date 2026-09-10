@@ -1,0 +1,49 @@
+{
+  "source_basename": "train.jsonl",
+  "bytes": 311534235,
+  "sha256": "81584e95e3159c700bded3029c8e38f34e1e09999cfe831dd9c3d58ebfd4110a",
+  "records": 1102,
+  "invalid_json_records": 0,
+  "top_level_keys": ["messages", "meta", "sup", "tools"],
+  "messages_per_record": {
+    "min": 5,
+    "p50": 15,
+    "p90": 28,
+    "max": 52,
+    "total": 18782
+  },
+  "supervised_messages_per_record": {
+    "min": 1,
+    "p50": 5,
+    "p90": 9,
+    "max": 16,
+    "total": 6134
+  },
+  "role_counts": {
+    "system": 1102,
+    "user": 2369,
+    "assistant": 7236,
+    "tool": 8075
+  },
+  "supervised_role_counts": {
+    "assistant": 6134
+  },
+  "assistant_messages_not_directly_supervised": 1102,
+  "messages_sup_length_mismatches": 0,
+  "non_boolean_sup_items": 0,
+  "supervised_non_assistant_messages": 0,
+  "tools_per_record": {
+    "min": 32,
+    "p50": 35,
+    "max": 35,
+    "distribution": {
+      "32": 438,
+      "35": 664
+    },
+    "unique_tool_names": 41
+  },
+  "meta_fields": ["trace_id", "model", "rule_lang", "n_triggers", "rule_head"],
+  "records_with_any_nonnull_meta_field": 0,
+  "raw_jsonl_committed": false,
+  "reason_not_committed": "Contains internal prompts, tool schemas, test-account-like identifiers, and potential private data."
+}
