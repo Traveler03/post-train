@@ -74,7 +74,7 @@ AutoTask Pipeline 的早期 Notion 页没有稳定导出文件；仓库内保存
 - [Notion 原文](../source-materials/notion/pro-flow.md#v2)记录：“v2.1 去掉 v2 里面的 grad norm 尖峰数据（pc8）”。
 - [pc7 checkpoint 总表](../source-materials/notion/pro-flow-assets/image%208.png)记录过滤前版本各 checkpoint；[pc7 三次复测](../source-materials/notion/pro-flow-assets/image%209.png)显示 `s162` 存在明显波动。
 - [pc8 checkpoint 评测图](../source-materials/notion/pro-flow-assets/image%2014.png)记录过滤后版本多个 checkpoint；其中 `pc8_s75` 为 Drive 83.8%、Docs 83.8%、Slides 78.7%。
-- 当前没有找到 spike step 到样本 ID 的过滤清单、删除数量、过滤脚本、pc8 训练日志、pc8 多次复测或完整同配方消融。现有材料足以证明这项版本迭代发生过，但不足以复原样本级处理过程，也不足以声称过滤导致提升或退化。
+- 以 `pc7_s162` 三次复测均值为参照，`pc8_s75` 在 Drive／Docs／Slides 上为 +0.1／+2.3／-0.3pp，三项宏平均约 +0.7pp，支持“现有读数显示小幅整体增益”。当前没有 spike step 到样本 ID 的过滤清单、删除数量、过滤脚本、pc8 训练日志、pc8 多次复测或完整同配方消融，因此不把该增益表述成严格因果。
 
 ## AutoTask 本地源码
 
