@@ -4,7 +4,7 @@
 
 本人已确认独立负责数据合成与 LoRA SFT 全流程，采用“独立负责／独立搭建”。简历主体只写 Pro，AutoTask 保留为补充经验。
 
-效果数字取自已记录的 Pro 项目结果；投递前仍需补齐其 checkpoint 与评测 run 对应关系。v7 已完成“读入 1,149 → train 1,102／val 32 → 276 步训练 → step 276 checkpoint”的绑定，但最终 JSONL 的 trace 元信息为空，且 Drive／Docs／Slides 效果表尚未绑定到该 checkpoint。不用 AutoTask 数字代替 Pro 指标。
+效果数字取自已记录的 Pro 项目最终结果。v7 已完成“读入 1,149 → train 1,102／val 32 → 276 步训练 → step 276 checkpoint”的工程绑定；历史 `pc7_s162` 也有版本级评测和三次复测。Drive／Docs／Slides 的 +4.93／+5.03／+3.22pp 来自包含后续 v2.1～v3.1 迭代的项目统一口径，不写成 v7 step 276 的单点效果，也不用 AutoTask 数字代替 Pro 指标。
 
 ## 四条展开版
 

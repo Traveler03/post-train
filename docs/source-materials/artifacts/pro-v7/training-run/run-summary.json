@@ -59,9 +59,19 @@
   "stability": {
     "skipped_iterations": 0,
     "nan_iterations": 0,
+    "clip_grad": 1.0,
     "grad_norm_median": 0.166,
     "grad_norm_maximum": 886.158,
-    "grad_norm_spikes_over_1_66": 29
+    "grad_norm_spikes_over_1_66": 29,
+    "first_epoch_spike_positions_checked": 8,
+    "spikes_repeated_near_same_position_next_epoch": 5,
+    "repeated_step_pairs": [
+      [42, 180],
+      [59, 197],
+      [94, 232],
+      [115, 253],
+      [136, 274]
+    ]
   },
   "steady_performance": {
     "step_time_p50_seconds": 23.61,
@@ -74,4 +84,3 @@
   "final_checkpoint_saved": true,
   "local_checkpoint_weight_shard_complete": false
 }
-
