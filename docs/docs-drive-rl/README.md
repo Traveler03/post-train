@@ -32,4 +32,6 @@ Docs/Drive 任务与账号环境
 
 ## 范围
 
-正文只讨论 Docs/Drive RL，不混入 Pro SFT、AutoTask Morning Brief 或其他业务线的规模和结果。公开材料不包含账号、密钥、内部服务地址、原始用户内容、模型权重和可还原隐私的轨迹。
+正文只讨论 Docs/Drive RL，不混入 Pro SFT、AutoTask Morning Brief 或其他业务线的规模和结果。公开材料包含经安全审查的 SkillBank、状态 DAG 与信用分配核心源码快照，但不包含账号、密钥、内部服务地址、原始用户内容、模型权重和可还原隐私的轨迹。
+
+核心实现见[源码快照](../../source-snapshot/docs-drive-rl/README.md)。

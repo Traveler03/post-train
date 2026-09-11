@@ -1,6 +1,6 @@
 # Docs/Drive Agent RL 来源与证据
 
-本页记录公开总结所依据的实现和实验材料。原始工程位于内部训练仓库；本公开仓库只保存脱敏总结，不复制账号、密钥、服务地址、原始用户数据、完整轨迹、模型权重或内部业务源码。
+本页记录公开总结所依据的实现和实验材料。原始工程位于内部训练仓库；本公开仓库已保存经过安全审查的 [SkillBank 与 Milestone DAG 核心源码快照](../../source-snapshot/docs-drive-rl/README.md)，但不复制账号、密钥、服务地址、原始用户数据、完整轨迹、模型权重或完整外部业务服务。
 
 ## 1. 个人职责口径
 
@@ -29,6 +29,8 @@
 | `my_scripts/train_google_docs_single_qwen35_4b_*.sh` | Docs Full/LoRA 训练入口 |
 | `my_scripts/train_google_drive_single_qwen35_4b_*.sh` | Drive Full/LoRA 训练入口 |
 
+本次公开快照聚焦离线 Skill 与 Milestone DAG，不包含与内部 Agent 服务、账号池和本地模型路由紧耦合的完整 Rollout Runtime。
+
 ## 3. Reward、Milestone 与 Advantage
 
 | 内部工程路径 | 支持内容 |
@@ -40,6 +42,8 @@
 | `algo/grpo_adk/milestone_advantage.py` | Boundary Reward、组内局部 Advantage 与全局信号组合 |
 | `algo/offline_skills/authorization.py` | 授权策略与状态图分支物化 |
 | `docs/milestone_segment_advantage.md` | 当前 Advantage 定义、配置、验证数据和已知限制 |
+
+公开实现：[Milestone DAG 与 Advantage](../../source-snapshot/docs-drive-rl/algo/grpo_adk/)。
 
 ## 4. SkillBank 合成与演化
 
@@ -56,6 +60,8 @@
 | `scripts/generate_offline_skillbank.py` | SkillBank 生成入口 |
 | `scripts/evolve_milestone_skillbank.py` | Verifier Evolution 入口与断点续跑 |
 | `docs/offline_skill_generation.md` | 生成、实例化、回放和演化流程说明 |
+
+公开实现：[offline_skills](../../source-snapshot/docs-drive-rl/algo/offline_skills/) · [生成/演化脚本](../../source-snapshot/docs-drive-rl/scripts/) · [v5 类别级 Skill 模板](../../source-snapshot/docs-drive-rl/artifacts/offline_skillbank_v5/skills/)。
 
 ## 5. 数据与实验产物
 
@@ -113,6 +119,8 @@ tests/test_turn_reward_report.py
 - 端到端系统架构。
 - 核心模块职责和数据流。
 - Process Reward、Authorization 和 Advantage 公式。
+- 离线 SkillBank、状态 DAG、Milestone Judge、Authorization、Boundary Advantage、演化和审计源码。
+- 9 个 Docs/Drive 类别级 Skill 的策略、状态模板和 Judge Rubric。
 - 聚合数据规模、离线回放和 Live 评测结果。
 - 设计取舍、已知限制和面试表述。
 
@@ -124,7 +132,7 @@ tests/test_turn_reward_report.py
 - Seed 原文、用户文档、文件名、邮件地址和完整 Tool Arguments。
 - 原始 Prompt、System Prompt、Token ID、模型回复和逐条轨迹。
 - Model Checkpoint、Adapter 权重和大体积训练数据。
-- 可直接复用内部服务的业务源码。
+- 与内部 Agent 服务、账号池、模型路由和真实 Connector 紧耦合的运行时代码。
 
 ## 8. 结论强度
 

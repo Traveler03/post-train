@@ -1,0 +1,171 @@
+{
+  "authorization_policy": null,
+  "completion_rule": "All states required by the instantiated case must pass deterministic and semantic checks; any hard failure fails the case.",
+  "purpose": "Resolve Drive files or folders and return requested metadata or content with evidence.",
+  "schema": "migoo-task-state-template-v1",
+  "state_semantics": "Nodes represent achieved task states; tool calls are accepted evidence, not graph branches.",
+  "states": [
+    {
+      "accepted_evidence": [
+        "成功的只读 Drive 检索或目录枚举结果，包含可识别的资源名称及资源标识、类型、父级、链接或时间等字段。",
+        "成功的共享云端硬盘列表结果，包括明确的空列表。",
+        "经范围和筛选条件约束后的候选集合及分页结束标记。",
+        "直接读取已知资源后返回的资源身份信息，可证明目标已被解析。"
+      ],
+      "applies_when": "all cases",
+      "checklist": [
+        "确认查询对象是文件、文件夹、根目录清单还是共享云端硬盘。",
+        "将自然语言、缩写或混合语言映射为合理检索词，同时保留明确约束。",
+        "核对返回项与目标名称或主题、类型及范围一致。",
+        "单目标检查歧义，多目标检查遗漏；全量请求检查分页是否结束。",
+        "允许经正确查询得到空结果，但限定结论范围。"
+      ],
+      "depends_on": [],
+      "deterministic_checks": [
+        {
+          "description": "A Drive resource or requested listing is resolved.",
+          "kind": "tool_called",
+          "min_count": 1,
+          "tool_patterns": [
+            "google_drive_search",
+            "google_drive_ls",
+            "google_drive_get",
+            "google_drive_drives",
+            "google_drive_url",
+            "google_docs_cat",
+            "google_sheets_get"
+          ]
+        }
+      ],
+      "expansion": "none",
+      "hard_failures": [
+        "未执行任何 Drive 解析动作却声称已找到、未找到或列完资源。",
+        "返回的资源明显不满足用户指定名称、类型、目录或范围。",
+        "单目标存在明显歧义却未经说明选定错误资源。",
+        "全量请求存在未处理分页或已知匹配项遗漏，却声称结果完整。",
+        "执行任何未获授权的写入、移动、删除、分享或权限变更。"
+      ],
+      "id": "locate_drive_resource",
+      "objective": "在用户指定的 Drive 范围内解析目标资源或请求清单，并满足名称、类型、目录、时间、排序和基数约束。",
+      "required": "always",
+      "required_operations": [],
+      "semantic_checks": [
+        "资源与用户描述在语义上是否匹配，而非仅共享一个宽泛关键词。",
+        "根目录、全部 Drive 和共享云端硬盘等范围是否被正确区分。",
+        "类型筛选是否依据资源类型证据，而非只看扩展名猜测。",
+        "多条件请求是否同时满足全部条件，排序是否采用指定字段和方向。",
+        "空结果是否仅被表述为当前查询范围内无可见结果。"
+      ]
+    },
+    {
+      "accepted_evidence": [
+        "Drive 返回的资源元数据字段，如类型、修改时间、大小或可访问链接。",
+        "文档读取结果中包含目标事实的正文段落或结构化文本。",
+        "表格读取结果中包含目标行列、标签和单元格值。",
+        "评论读取结果中包含评论正文，以及请求时对应的引用原文或上下文。",
+        "等价只读导出或下载后取得的可核验内容。"
+      ],
+      "applies_when": "the answer requires file contents, metadata, sheet cells, or comments",
+      "checklist": [
+        "确认读取对象与定位阶段的资源身份一致。",
+        "按请求选择正文、单元格、元数据、链接或评论等信息类别。",
+        "内容问答定位到相关段落、字段、区域或评论正文。",
+        "评论请求同时读取用户明确要求的引用原文或上下文。",
+        "保留数值精度、单位、时间含义和字段含义。",
+        "多资源请求逐一取得所需详情，并标记读取失败项。"
+      ],
+      "depends_on": [
+        "locate_drive_resource"
+      ],
+      "deterministic_checks": [
+        {
+          "description": "The requested resource details are read.",
+          "kind": "tool_called",
+          "min_count": 1,
+          "tool_patterns": [
+            "google_drive_get",
+            "google_drive_url",
+            "google_docs_cat",
+            "google_docs_comments_*",
+            "google_sheets_get",
+            "google_sheets_metadata"
+          ]
+        }
+      ],
+      "expansion": "none",
+      "hard_failures": [
+        "需要资源内容或详情时仅凭文件名、用户提示或常识直接作答。",
+        "读取了错误资源，或详情证据无法绑定到已解析目标。",
+        "将修改时间表述为上传时间、错误换算大小单位或虚构未返回的链接及字段。",
+        "擅自改变精确数值、比例、金额或日期。",
+        "用户要求评论原文或引用上下文时只返回评论存在性。",
+        "详情读取失败后仍编造完整答案。"
+      ],
+      "id": "inspect_resource",
+      "objective": "针对已解析的正确资源读取用户要求的正文、表格值、元数据、链接或评论，并取得足以支持答案的直接证据。",
+      "required": "conditional",
+      "required_operations": [
+        "read_content",
+        "read_metadata",
+        "read_comments"
+      ],
+      "semantic_checks": [
+        "证据是否直接覆盖用户询问的字段或内容，而非仅证明文件存在。",
+        "资源类型与读取内容是否一致，目标行列或段落是否定位正确。",
+        "总结、计算或比较是否可由读取内容复核。",
+        "数值、单位、日期和元数据字段语义是否与原证据一致。",
+        "批量请求是否对每个目标资源完成相同所需字段的读取。"
+      ]
+    },
+    {
+      "accepted_evidence": [
+        "最终回复中的每个关键事实都能对应到已取得的 Drive 检索、元数据、正文、表格或评论结果。",
+        "清单项目数、编号和动作结果一致，链接与对应资源正确配对。",
+        "内容结论附有足够的资源名称、章节、字段或上下文说明以便核验。",
+        "部分完成回复准确列明已完成项、失败项和阻塞原因。"
+      ],
+      "applies_when": "all cases",
+      "checklist": [
+        "直接给出用户要求的清单、字段、链接、内容结论或总结。",
+        "逐项核对名称、数量、编号、类型、时间、大小、数值和链接。",
+        "全量、多文件和复合请求确认无遗漏。",
+        "明确区分已证实事实、空结果、歧义和读取失败。",
+        "避免加入证据未支持的附加事实或操作完成声明。"
+      ],
+      "depends_on": [
+        "inspect_resource"
+      ],
+      "deterministic_checks": [
+        {
+          "description": "The final answer is grounded in retrieved Drive evidence.",
+          "kind": "response_nonempty",
+          "min_count": 1,
+          "tool_patterns": []
+        }
+      ],
+      "expansion": "none",
+      "hard_failures": [
+        "最终回复为空，或没有回答用户的核心请求。",
+        "关键事实与动作结果冲突、内部自相矛盾或包含伪造信息。",
+        "把部分结果表述为全部结果，或遗漏复合请求中的关键子任务。",
+        "需要读取详情却只报告定位结果，并宣称任务完成。",
+        "泄露无关敏感标识，或声称实施了未经授权的写操作。"
+      ],
+      "id": "answer_from_evidence",
+      "objective": "用检索和读取结果完整回答用户请求，所有事实、数量和链接均可追溯到 Drive 证据。",
+      "required": "always",
+      "required_operations": [],
+      "semantic_checks": [
+        "最终结论是否由本次 Drive 证据支持，而非由问题中的暗示代替。",
+        "清单数量与实际列举项是否一致，每个链接是否属于对应资源。",
+        "回答粒度是否匹配请求：定位、元数据、正文、评论、计算或总结。",
+        "若结果为空或受阻，措辞是否准确限定范围并避免过度推断。",
+        "是否完整覆盖多个资源、多个字段和排序要求。"
+      ]
+    }
+  ],
+  "summary": "验收关注三个语义阶段：正确解析 Drive 资源或清单、按需读取请求详情、依据证据完整作答。工具调用仅是证据载体，不限定实现路径。",
+  "template_id": "drive.retrieve",
+  "template_version": "1.4.0",
+  "verifier_version": "task-state-verifier-v5"
+}

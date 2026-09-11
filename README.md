@@ -54,4 +54,4 @@ AutoTask 的 662 条规则、2,025 个环境、1,281 条训练样本，以及约
 
 ## 文档边界
 
-Pro 项目保存了整理后的材料、Notion 导出原文、实验截图和相关源码快照，入口见[原始材料与证据](docs/pro/sources.md)。Docs/Drive RL 仅公开脱敏架构、公式和聚合实验事实，不包含内部账号、服务地址、原始轨迹、权重或业务源码；证据映射见 [Docs/Drive 来源与证据](docs/docs-drive-rl/sources.md)。
+Pro 项目保存了整理后的材料、Notion 导出原文、实验截图和相关源码快照，入口见[原始材料与证据](docs/pro/sources.md)。Docs/Drive RL 公开脱敏架构、公式、聚合实验事实，以及 [SkillBank 与 Milestone DAG 核心源码](source-snapshot/docs-drive-rl/README.md)；不包含内部账号、服务地址、原始轨迹、权重或完整业务服务实现，证据映射见 [Docs/Drive 来源与证据](docs/docs-drive-rl/sources.md)。

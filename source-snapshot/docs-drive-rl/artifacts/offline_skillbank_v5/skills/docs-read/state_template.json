@@ -1,0 +1,169 @@
+{
+  "authorization_policy": null,
+  "completion_rule": "All states required by the instantiated case must pass deterministic and semantic checks; any hard failure fails the case.",
+  "purpose": "Locate a Google Doc, inspect the requested view, and answer only from retrieved evidence.",
+  "schema": "migoo-task-state-template-v1",
+  "state_semantics": "Nodes represent achieved task states; tool calls are accepted evidence, not graph branches.",
+  "states": [
+    {
+      "accepted_evidence": [
+        "只读搜索结果中存在唯一、具体且标题匹配的文档记录。",
+        "直接资源获取结果同时给出可验证的文档身份或标题。",
+        "正文、结构、元数据或评论读取结果自身明确关联到目标文档。",
+        "用户提供的直接链接或资源标识被成功解析为可访问文档。"
+      ],
+      "applies_when": "all cases",
+      "checklist": [
+        "已识别用户指定的标题、链接、资源标识或其他定位线索。",
+        "已取得至少一个带具体资源身份的结果。",
+        "已核对标题、文档类型及必要上下文。",
+        "多语言、特殊字符和无意义空格差异得到稳健处理。",
+        "若存在多个合理候选，已完成消歧或向用户请求确认。"
+      ],
+      "depends_on": [],
+      "deterministic_checks": [
+        {
+          "description": "A concrete document or requested view is resolved.",
+          "kind": "tool_called",
+          "min_count": 1,
+          "tool_patterns": [
+            "google_drive_search",
+            "google_drive_get",
+            "google_docs_cat",
+            "google_docs_info",
+            "google_docs_structure"
+          ]
+        }
+      ],
+      "expansion": "none",
+      "hard_failures": [
+        "未解析出具体文档却声称已经找到。",
+        "选择了标题、类型或上下文明显不符的文档。",
+        "多个候选仍有实质歧义时任意选择其一。",
+        "仅凭助手猜测、文件名联想或无成功结果的调用认定文档身份。"
+      ],
+      "id": "resolve_document",
+      "objective": "将用户描述解析为一个具体且与请求相符的文档或明确的目标视图。",
+      "required": "always",
+      "required_operations": [],
+      "semantic_checks": [
+        "忽略排版空格后，标题匹配仍应保持原有语言和有意义字符。",
+        "资源身份必须来自动作结果，而非最终回复中的自我声明。",
+        "直接读取成功可以同时证明解析状态，无需强制经过特定搜索工具。",
+        "标题近似匹配只有在不存在实质语义差异且候选唯一时才可接受。"
+      ]
+    },
+    {
+      "accepted_evidence": [
+        "正文读取结果中直接包含所请求内容或目标事实。",
+        "结构化读取结果包含段落、标题、层级或章节顺序。",
+        "元数据读取结果明确包含用户所问的字段及其值。",
+        "评论读取结果包含所请求评论及必要上下文。",
+        "针对章节或关键词取得的片段同时包含足以确认范围的标题或相邻上下文。",
+        "多个等价只读视图组合后完整覆盖请求范围。"
+      ],
+      "applies_when": "the request asks for content, structure, metadata, or comments beyond search results",
+      "checklist": [
+        "读取的视图类型与用户请求一致。",
+        "限定章节、关键词或段落范围已被准确定位。",
+        "目标事实实际出现在返回结果中。",
+        "长文或截断结果已补充读取到足以回答的范围。",
+        "需要多个字段或多个条目时，已逐项收集证据。"
+      ],
+      "depends_on": [
+        "resolve_document"
+      ],
+      "deterministic_checks": [
+        {
+          "description": "The exact requested document view is read.",
+          "kind": "tool_called",
+          "min_count": 1,
+          "tool_patterns": [
+            "google_docs_cat",
+            "google_docs_info",
+            "google_docs_structure",
+            "google_docs_comments_*",
+            "google_drive_get"
+          ]
+        }
+      ],
+      "expansion": "none",
+      "hard_failures": [
+        "需要正文、结构、元数据或评论时仅停留在搜索结果。",
+        "读取了与请求不对应的视图并据此作答。",
+        "目标内容未出现在已取得证据中却推断其值。",
+        "返回被截断且目标部分不可见时仍声称已经验证。",
+        "限定章节请求混用其他章节内容，或遗漏明确要求的字段、条目。"
+      ],
+      "id": "inspect_requested_view",
+      "objective": "实际取得用户要求的正文、限定章节、结构、元数据或评论，并覆盖其指定范围。",
+      "required": "conditional",
+      "required_operations": [
+        "read_content",
+        "read_metadata",
+        "read_comments"
+      ],
+      "semantic_checks": [
+        "视图是否匹配由用户意图和返回内容共同判断，不由某个固定工具名称决定。",
+        "指定章节应通过标题或边界上下文确认，单纯关键词碰撞不足以证明范围。",
+        "结构证据支持标题、段落和层级，不自动支持对章节内容的解释。",
+        "元数据不能被当作正文事实，正文也不能替代用户明确要求的元数据字段。",
+        "部分结果只有在明确标注缺失范围时才可作为部分完成证据，不能支持完整完成声明。"
+      ]
+    },
+    {
+      "accepted_evidence": [
+        "最终回复直接摘录或忠实转述已读取内容。",
+        "结构列表与结构化读取结果中的标题、顺序和层级一致。",
+        "元数据答案逐字段对应读取结果。",
+        "中文讲解忠实保留原文数值、单位和不确定性。",
+        "无法完整读取时，回复明确区分已验证事实与未验证部分。"
+      ],
+      "applies_when": "all cases",
+      "checklist": [
+        "最终回复非空并直接回答用户问题。",
+        "所有关键事实都能映射到动作结果。",
+        "数字、比例、单位、币种和时间表达与原文一致。",
+        "翻译或总结未改变原意，也未加入无依据背景。",
+        "多项请求均已覆盖；若未完成，已明确说明缺失部分。",
+        "回复不包含内部推理、隐藏标签、调试文本或破损链接。",
+        "整个轨迹没有未授权写入或其他越权操作。"
+      ],
+      "depends_on": [
+        "inspect_requested_view"
+      ],
+      "deterministic_checks": [
+        {
+          "description": "A user-visible evidence-grounded answer is returned.",
+          "kind": "response_nonempty",
+          "min_count": 1,
+          "tool_patterns": []
+        }
+      ],
+      "expansion": "none",
+      "hard_failures": [
+        "最终答案与读取证据矛盾。",
+        "添加证据未注明的币种、年份、日期、单位、原因或结论。",
+        "错误翻译时间、数量、行动项或其他影响理解的关键信息。",
+        "遗漏用户明确要求的主要部分却宣称任务完成。",
+        "没有可支持答案的读取证据，或将搜索结果当作正文答案。",
+        "执行任何未经用户授权的创建、编辑、删除、移动、共享或其他写入操作。"
+      ],
+      "id": "answer_from_evidence",
+      "objective": "向用户返回与请求直接对应、完整、清晰且不超出读取证据的答案。",
+      "required": "always",
+      "required_operations": [],
+      "semantic_checks": [
+        "摘要允许压缩表述，但不得改变事实范围、主体关系和限定条件。",
+        "原文未给出的信息应保持未说明，不得依据常识补全。",
+        "相对时间应忠实翻译；除非证据明确，不转换为具体日期或年份。",
+        "最终回复中的每个关键数字和专有事实都应能在动作结果中找到依据。",
+        "格式瑕疵若暴露内部推理、造成歧义或影响用户使用，应判为回复质量问题。"
+      ]
+    }
+  ],
+  "summary": "三个状态分别验收目标文档是否被具体解析、请求视图是否被实际读取，以及最终回复是否完整且严格受证据约束。等价的只读工具结果均可作为证据，不能只凭工具名称判定。",
+  "template_id": "docs.read",
+  "template_version": "1.4.0",
+  "verifier_version": "task-state-verifier-v5"
+}
