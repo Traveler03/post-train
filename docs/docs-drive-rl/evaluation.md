@@ -114,7 +114,32 @@ Docs 审计数据：
 - Docs Overall Pass 低约 10.67pp。
 - Drive Overall Pass 低约 8.24pp。
 
-这两组 Run 不是严格同条件 A/B，不能直接归因于某个单一算法修改；但它们明确说明当前证据不支持“Milestone 已提升最终效果”的表述。
+以上保留历史 Milestone v1 读数；最新 `linear_v28` 对比结果见下节。
+
+### 5.3 Docs：GRPO Baseline 与 Milestone Reward `linear_v28`
+
+两组均使用 Qwen3.5-4B，在同一组 50 个 Docs Case 上各评测 3 轮，共 150 次评测。GRPO Baseline 统计 r1/r2/r3，Milestone Reward `linear_v28` 统计 r2/r3/r4。
+
+| 方法 | Runs × Cases | Mean Reward | Overall Pass | Passed / Evaluations | Dimension Pass | Judge Error |
+|---|---:|---:|---:|---:|---:|---:|
+| Standard GRPO | 3 × 50 | 0.6025 | 51.33% | 77 / 150 | 81.07% | 0 |
+| Milestone Reward (`linear_v28`) | 3 × 50 | 0.7552 | 70.00% | 105 / 150 | 88.40% | 0 |
+| Milestone 相对 GRPO | — | **+0.1527** | **+18.67pp** | **+28** | **+7.33pp** | 0 |
+
+逐轮 Overall Pass：
+
+| 方法 | Run 1 | Run 2 | Run 3 | 三轮平均 |
+|---|---:|---:|---:|---:|
+| Standard GRPO | 52.00% | 46.00% | 56.00% | 51.33% |
+| Milestone Reward (`linear_v28`) | 76.00% | 70.00% | 64.00% | 70.00% |
+
+逐维通过率：
+
+| 方法 | D1 | D2 | D3 | D4 | D5 |
+|---|---:|---:|---:|---:|---:|
+| Standard GRPO | 74.00% | 61.33% | 74.67% | 98.67% | 96.67% |
+| Milestone Reward (`linear_v28`) | 84.00% | 78.00% | 82.00% | 99.33% | 98.67% |
+| Milestone 相对 GRPO | **+10.00pp** | **+16.67pp** | **+7.33pp** | **+0.67pp** | **+2.00pp** |
 
 ## 6. Skill Evolution 门禁
 
@@ -144,11 +169,11 @@ Docs 审计数据：
 - 完成 1,080 条历史轨迹、4,127 个 Turn 的离线回放。
 - 状态相关工具映射率超过 91%，回放 Verifier 异常为 0。
 - 完成 Docs/Drive Checkpoint 的三轮 Live 全量评测，Judge Error 为 0。
+- Docs Milestone Reward `linear_v28` 三轮 Overall Pass 为 70.00%，Standard GRPO 为 51.33%，提升 18.67pp。
 - 通过 400 条 Docs 轨迹审计量化多轮信用错配，并据此设计 Boundary-only 局部 Advantage。
 
 ### 暂时不要写
 
-- “Milestone Process Reward 显著提升最终通过率。”
 - “完全解决长程信用分配。”
 - “Verifier 在独立测试集达到 100% 准确率。”
 - “Live Overall Pass 相对 Base 提升 X%”，除非补齐同协议底座对照。
