@@ -18,6 +18,7 @@
 | Docs/Drive 简历与面试 | [简历表述](docs/docs-drive-rl/resume.md) · [面试准备](docs/docs-drive-rl/interview.md) |
 | 项目背景、个人职责、完整讲述 | [项目说明](docs/pro/project.md) |
 | 线上轨迹、能力缺口、任务合成、拒绝采样 | [数据流水线](docs/pro/data-pipeline.md) |
+| 线上日志怎样变成 query、文件环境和 SFT 轨迹 | [完整数据构造流程](docs/pro/data-construction.md) |
 | 多轮监督、LoRA 挂点、长上下文和训练配置 | [LoRA SFT](docs/pro/lora-sft.md) |
 | 效果数字、比较条件、退化和实验绑定 | [评测与结果](docs/pro/evaluation.md) |
 | 可直接修改的简历条目、面试开场 | [简历与介绍](docs/pro/resume.md) |
@@ -40,7 +41,7 @@
 ## Pro 六步项目主线
 
 1. **定义业务问题：** 分析 Pro 线上任务、工具覆盖和失败类型，定位复杂编辑、权限处理和多步执行等能力缺口。
-2. **合成与筛选数据：** 清洗真实轨迹，在可执行环境中构造缺口任务，通过 Rollout、规则检查和判官筛选得到可用轨迹。
+2. **合成与筛选数据：** 从线上日志提取需求、补齐上下文并改写为独立 query，构造可执行环境与缺口任务，通过新的 Rollout、判官和清理得到可用轨迹。
 3. **建立多轮监督：** 区分历史、当前请求、assistant 动作和工具返回，只在目标模型行为上计算 loss。
 4. **完成长上下文 SFT：** 适配 DeepSeek MoE 的 LoRA 与 98k 上下文训练，使用 1,102 条样本运行 276 步、约 2 个 epoch 并保存 checkpoint。
 5. **用训练信号反查数据：** 在确认训练未发散后，结合 grad norm spike 的跨 epoch 复现位置排查可疑 batch／轨迹。

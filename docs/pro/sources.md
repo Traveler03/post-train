@@ -6,6 +6,7 @@
 
 - **个人职责：** 用户明确确认，整个数据合成及 LoRA SFT 过程均由本人搭建。
 - **实现与配置：** 依据用户提供的 GitLab `main`／`milly` ZIP 快照；相关文件已纳入本仓库。
+- **数据构造链路补充：** 2026-09-16 核对本地 `lsy` 脚本和 v1/v2 构建记录，新增[完整流程](data-construction.md)；这些内部原文件不随公开仓库分发，具体核查范围见下文。
 - **项目过程与效果：** 依据 Notion 导出原文、文字表格和实验截图；相关材料已纳入本仓库。
 - **本次验证：** 现有离线测试，以及 pc7/pc8 源文件全量差分、训练日志指标提取和前期同题评测核验；没有重跑 GPU 训练、线上评测或判官调用。
 - **待补关联：** v7 数据已绑定到训练 run 和 step 276 checkpoint；该 checkpoint 与汇总评测结果尚未绑定。
@@ -39,7 +40,24 @@
 | [retrying_eval_runner.py](../../source-snapshot/milly/eval/scripts/retrying_eval_runner.py) | 执行失败补测、状态恢复 |
 | [评测读数陷阱](../../source-snapshot/milly/eval/docs/06_读数陷阱.md) | 波动、缺失、环境变化和错误比较 |
 
-原始记录提到的 `gen_gap_queries.py` 未在上传快照中找到。相关流程以项目记录为证据，未声称代码已被逐行检查。
+旧上传快照不含 `gen_gap_queries.py`；本次已在本地工作区找到并核对其复用 seed、改写 query / 验收目标的实现，详见下一节。该文件未补入公开源码快照。
+
+## 数据构造链路补充核查
+
+核验日期：2026-09-16。以下路径相对内部工作区，不是本仓库的可点击源码链接；这里只公开流程总结和实现定位，不拷贝原文、线上数据或带服务配置的脚本。读者入口为[从线上日志到 SFT](data-construction.md)。
+
+1. `lsy/main/script/mine_synthesis_queries.py`：候选元信息筛选、`user_turn_boundary` 定位当前轮、`_strip_injections` 后写入 `query`，以及 query 去重和评测相似性排除。代码没有“必须 FAIL”的筛选条件。
+2. `lsy/main/script/materialize_v1_full_traces.py`：按日期和 `trace_id` 回查完整记录，保留 `contents / output / tool_spans`，合入 `v1_query` 等标签。
+3. `lsy/post-train/tools/pro_chain_pipeline/rewrite_queries.py`：`extract_history_text` / `rewrite_one`，最多取之前 12 条历史消息，生成自包含 `query_zh`、意图说明、来源和成功标记。
+4. `lsy/post-train/tools/pro_chain_pipeline/gen_worlds_prochain.py`：构造 `seed / expected_output / world_story`；核对输入提示词、`validate_world` 及 `rewrite_ok=False` 跳过逻辑。提示词中的去标识要求不等同于全量隐私审计。
+5. `lsy/post-train/tools/pro_chain_pipeline/build_dataset_csv.py`：`flatten_seed` / `build_row`，核对 query、seed 文件和验收目标到 CSV 字段的映射。
+6. `lsy/post-train/tools/pro_chain_pipeline/gen_gap_queries.py`：候选场景与授权情境提示词、`_call`。原 world 深拷贝后仅更换 query 与验收目标，保留 seed；使用 `base_case_id` 记录复用关系。
+7. `lsy/post-train/tools/pro_chain_pipeline/to_sft_reasoning.py`：`merge_consecutive` 按 `thought` 分开思考和正文。训练侧 `dsv4_run/prep_prochain.py` 的 `to_openai` 及整轨迹产物路径补充说明 `messages / tools / sup` 和监督边界。
+8. `lsy/main/doc/pro_chain数据合成产线_0825.md`：六步产线、world 约束、新会话发车和 PASS 收割，以及历史失败改写回退问题的记录。
+9. `lsy/main/v2/doc/prochain_v1数据构建说明_0827补记.md`：真实需求种子、中文改写、人造环境、重新执行后收集 PASS 的历史链路；其中部分内容为事后补记。
+10. `lsy/main/v2/doc/prochain_v2数据构建说明_0826.md`：新增 query 的 792 → 525 → 519 → 468 漏斗、最终 681 + 468 = 1,149 的构成、格式清理及未运行通用 `merge_filter.py` 的边界。
+
+来源模型、执行模型与判官是不同角色；执行时 High/Low 档位的历史口径有冲突，流程总结只报告确认的模型版本。上述代码核查没有触发数据生成、收割、判官或训练，也不是对所有最终样本 PASS 的重新认证。版本级构成记录与逐条来源链核验不能混为一谈。
 
 ## Pro v7 数据产物
 
