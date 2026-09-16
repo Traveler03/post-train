@@ -1,0 +1,315 @@
+{
+  "method": "Canonical whole-row SHA256 multiset difference; actual tool_call nodes only, proxy_tool unwrapped; tool schemas excluded.",
+  "sources": {
+    "before": {
+      "file": "v2.jsonl.gz",
+      "bytes": 107944221,
+      "sha256": "7e5143a7d5d3aba1b7e6fa4ec549810f0749fa17c682c267fceabce907097fc3"
+    },
+    "after": {
+      "file": "v2.1.jsonl.gz",
+      "bytes": 94586389,
+      "sha256": "b9aee3a57ecf5d6518987ee4c8446af1450deef32765e0df0882e38cf10dfb02"
+    }
+  },
+  "subset_check": {
+    "strict_row_subset": true,
+    "added_rows": 0,
+    "removed_rows": 92
+  },
+  "before": {
+    "records": 1149,
+    "canonical_unique": 1149,
+    "assistant_md5_unique": 1149,
+    "first_user_unique": 977,
+    "families": {
+      "Drive": {
+        "records": 1119,
+        "percent": 97.389,
+        "calls": 2747
+      },
+      "Docs": {
+        "records": 484,
+        "percent": 42.1236,
+        "calls": 1237
+      },
+      "Sheets": {
+        "records": 194,
+        "percent": 16.8842,
+        "calls": 572
+      },
+      "Slides": {
+        "records": 117,
+        "percent": 10.1828,
+        "calls": 982
+      },
+      "Gmail": {
+        "records": 243,
+        "percent": 21.1488,
+        "calls": 503
+      },
+      "Calendar": {
+        "records": 6,
+        "percent": 0.5222,
+        "calls": 6
+      },
+      "Contacts": {
+        "records": 1,
+        "percent": 0.087,
+        "calls": 1
+      },
+      "Other": {
+        "records": 1079,
+        "percent": 93.9077,
+        "calls": 2652
+      }
+    },
+    "drive_docs_cooccurrence": {
+      "Drive_only": 640,
+      "Drive+Docs": 479,
+      "Docs_only": 5,
+      "Neither": 25
+    },
+    "tool_calls_total": 8700,
+    "tool_calls_per_record": {
+      "p50": 6.0,
+      "p90": 16.0,
+      "max": 39
+    },
+    "tool_call_count_bins": {
+      "11-20": 238,
+      "1-5": 531,
+      "6-10": 333,
+      "21+": 39,
+      "0": 8
+    },
+    "messages_per_record": {
+      "p50": 21.0,
+      "p90": 44.0,
+      "max": 93
+    }
+  },
+  "after": {
+    "records": 1057,
+    "canonical_unique": 1057,
+    "assistant_md5_unique": 1057,
+    "first_user_unique": 908,
+    "families": {
+      "Drive": {
+        "records": 1028,
+        "percent": 97.2564,
+        "calls": 2512
+      },
+      "Docs": {
+        "records": 439,
+        "percent": 41.5326,
+        "calls": 1135
+      },
+      "Sheets": {
+        "records": 172,
+        "percent": 16.2725,
+        "calls": 509
+      },
+      "Slides": {
+        "records": 111,
+        "percent": 10.5014,
+        "calls": 937
+      },
+      "Gmail": {
+        "records": 222,
+        "percent": 21.0028,
+        "calls": 457
+      },
+      "Calendar": {
+        "records": 5,
+        "percent": 0.473,
+        "calls": 5
+      },
+      "Contacts": {
+        "records": 1,
+        "percent": 0.0946,
+        "calls": 1
+      },
+      "Other": {
+        "records": 991,
+        "percent": 93.7559,
+        "calls": 2401
+      }
+    },
+    "drive_docs_cooccurrence": {
+      "Drive_only": 594,
+      "Drive+Docs": 434,
+      "Docs_only": 5,
+      "Neither": 24
+    },
+    "tool_calls_total": 7957,
+    "tool_calls_per_record": {
+      "p50": 6.0,
+      "p90": 15.0,
+      "max": 39
+    },
+    "tool_call_count_bins": {
+      "11-20": 213,
+      "1-5": 494,
+      "6-10": 304,
+      "21+": 38,
+      "0": 8
+    },
+    "messages_per_record": {
+      "p50": 21.0,
+      "p90": 44.0,
+      "max": 93
+    }
+  },
+  "removed": {
+    "records": 92,
+    "canonical_unique": 92,
+    "assistant_md5_unique": 92,
+    "first_user_unique": 90,
+    "families": {
+      "Drive": {
+        "records": 91,
+        "percent": 98.913,
+        "calls": 235
+      },
+      "Docs": {
+        "records": 45,
+        "percent": 48.913,
+        "calls": 102
+      },
+      "Sheets": {
+        "records": 22,
+        "percent": 23.913,
+        "calls": 63
+      },
+      "Slides": {
+        "records": 6,
+        "percent": 6.5217,
+        "calls": 45
+      },
+      "Gmail": {
+        "records": 21,
+        "percent": 22.8261,
+        "calls": 46
+      },
+      "Calendar": {
+        "records": 1,
+        "percent": 1.087,
+        "calls": 1
+      },
+      "Contacts": {
+        "records": 0,
+        "percent": 0.0,
+        "calls": 0
+      },
+      "Other": {
+        "records": 88,
+        "percent": 95.6522,
+        "calls": 251
+      }
+    },
+    "drive_docs_cooccurrence": {
+      "Drive_only": 46,
+      "Drive+Docs": 45,
+      "Neither": 1
+    },
+    "tool_calls_total": 743,
+    "tool_calls_per_record": {
+      "p50": 7.0,
+      "p90": 16.0,
+      "max": 23
+    },
+    "tool_call_count_bins": {
+      "1-5": 37,
+      "6-10": 29,
+      "11-20": 25,
+      "21+": 1
+    },
+    "messages_per_record": {
+      "p50": 23.0,
+      "p90": 44.9,
+      "max": 64
+    }
+  },
+  "pipeline": {
+    "before": {
+      "input": 1149,
+      "kept": 1134,
+      "discard_reasons": {
+        "超长(>98304)": 15
+      },
+      "splits": {
+        "train": {
+          "样本数": 1102,
+          "任务(rule_head)组数": 1102,
+          "token 总数": 75370567,
+          "长度 p50/p90/max": [
+            67541,
+            80830,
+            98297
+          ],
+          "进 loss 的 token 占比": 0.0502,
+          "每样本进 loss 的 token 数 p50/max": [
+            2295,
+            18334
+          ]
+        },
+        "val": {
+          "样本数": 32,
+          "任务(rule_head)组数": 32,
+          "token 总数": 2202436,
+          "长度 p50/p90/max": [
+            65880,
+            83431,
+            95510
+          ],
+          "进 loss 的 token 占比": 0.0631,
+          "每样本进 loss 的 token 数 p50/max": [
+            3153,
+            15293
+          ]
+        }
+      }
+    },
+    "after": {
+      "input": 1057,
+      "kept": 1042,
+      "discard_reasons": {
+        "超长(>98304)": 15
+      },
+      "splits": {
+        "train": {
+          "样本数": 1010,
+          "任务(rule_head)组数": 1010,
+          "token 总数": 68838516,
+          "长度 p50/p90/max": [
+            67469,
+            80549,
+            98297
+          ],
+          "进 loss 的 token 占比": 0.05,
+          "每样本进 loss 的 token 数 p50/max": [
+            2278,
+            18334
+          ]
+        },
+        "val": {
+          "样本数": 32,
+          "任务(rule_head)组数": 32,
+          "token 总数": 2198188,
+          "长度 p50/p90/max": [
+            66995,
+            85197,
+            91025
+          ],
+          "进 loss 的 token 占比": 0.0454,
+          "每样本进 loss 的 token 数 p50/max": [
+            1965,
+            10393
+          ]
+        }
+      }
+    }
+  },
+  "fingerprint_note": "assistant_md5 is a documented-method reconstruction (per-assistant content then reasoning_content, empty separator); original implementation is unavailable. Canonical SHA256 proves the row difference independently."
+}

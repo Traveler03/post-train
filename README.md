@@ -5,7 +5,7 @@
 - **Docs/Drive Agent RL：** 真实工具环境下的端到端 RL 体系、过程奖励、信用分配和 Skill Verifier 演化。
 - **Pro 主链路 Agent：** 数据合成、长上下文 LoRA SFT、训练反馈驱动的数据选择。
 
-职责口径由项目本人确认：Docs/Drive 项目主导完整 RL 体系及核心机制设计；Pro 项目独立负责数据合成与 LoRA SFT 全流程。两个项目的数据规模和效果指标分别记录，不交叉归因。更新日期：2026-09-11。
+职责口径由项目本人确认：Docs/Drive 项目主导完整 RL 体系及核心机制设计；Pro 项目独立负责数据合成与 LoRA SFT 全流程。两个项目的数据规模和效果指标分别记录，不交叉归因。更新日期：2026-09-16。
 
 ## 项目导航
 
@@ -23,7 +23,7 @@
 | 可直接修改的简历条目、面试开场 | [简历与介绍](docs/pro/resume.md) |
 | 高频追问、回答要点、具体例子 | [面试准备](docs/pro/interview.md) |
 | Notion 原文、截图、源码与证据强度 | [原始材料与证据](docs/pro/sources.md) |
-| AutoTask 的环境合成和训练优化记录 | [AutoTask 补充资料](docs/reference/autotask.md) |
+| 去 Spike 前后分布、删除方法、训练曲线与前期增益 | [pc7 → pc8 实验报告](docs/pro/spike-study/README.md) |
 | 本次分析范围、分支比较与已运行验证 | [分析记录](docs/reference/review-record.md) |
 
 ## Docs/Drive Agent RL 主线
@@ -48,9 +48,9 @@
 
 ## Pro 六步主线的结果
 
-以 `pc7_s162` 三次复测均值为参照，去 spike 数据的 `pc8_s75` 在 Drive／Docs／Slides 上分别变化 **+0.1／+2.3／-0.3pp**，三项宏平均约提升 **0.7pp**。该结果用于说明训练反馈驱动的数据选择闭环；完整比较边界见[评测文档](docs/pro/evaluation.md)。
+v2 → v2.1 删除 **92 / 1,149 条（8.01%）**，主要工具分布基本不变；完整训练的梯度尖峰次数由 16 降到 11，峰值降低约 40%，但 loss 整体接近、尖峰仍存在。
 
-AutoTask 的 662 条规则、2,025 个环境、1,281 条训练样本，以及约 76% 打包窗口减少，均保留在 AutoTask 参考文档中，未当作 Pro 的规模或效率指标。
+仅看约 **0.2–0.8 epoch 前期**，去 Spike 的 pc8 相对原版训练 pc7，四档同题配对的综合通过率变化为 **+2.44～+5.93pp，四档平均 +4.34pp**。这是单轮描述性结果，尚未证明统计显著或稳定提升，不代表最终效果。数据分布、过滤证据、三张曲线图和复现材料见[完整报告](docs/pro/spike-study/README.md)。
 
 ## 文档边界
 

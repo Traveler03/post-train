@@ -1,0 +1,54 @@
+{
+  "audit_date": "2026-09-16",
+  "method": "Manual cross-check of existing source metadata, launch scripts and actual train.log configuration; paths reduced to basenames. Not a runnable training configuration.",
+  "historical_version_note": {
+    "file": "数据版本说明.md",
+    "sha256": "03297e55e7f64b72e00be26bc61958fbae7f227e4acec0aaded4c138f92b9f4b"
+  },
+  "before": {
+    "experiment": "pc7-v2",
+    "meta_file": "data_prochain_v7/meta.json",
+    "meta_sha256": "6f67bdec66797e185bae31b86e442b4cf7753a094cac142699ee6359f304db8b",
+    "source_basename_in_meta": "v2.jsonl.gz",
+    "source_sha256_in_meta": "7e5143a7d5d3aba1b7e6fa4ec549810f0749fa17c682c267fceabce907097fc3",
+    "launch_file": "train_prochain_v7.sh",
+    "launch_sha256": "c1755c77784cb3404641aad4327604986656fad332ab6104c72a4edddb7dfa00",
+    "launch_data_basename": "data_prochain_v7",
+    "logged_data_basename": "data_prochain_v7",
+    "logged_output_basename": "out_prochain_v7_r16_98k_0826",
+    "logged_train_samples": 1102,
+    "logged_train_windows": 1102,
+    "log_evidence_lines": {"data_and_count": 18, "output": 20, "data_dir_config": 277}
+  },
+  "after": {
+    "experiment": "pc8-v2.1",
+    "meta_file": "data_prochain_v8/meta.json",
+    "meta_sha256": "a68eb267ea043d3a7f164ffc92048edc1f335648dec99a178fe505533b3fd1e4",
+    "source_basename_in_meta": "prochain_v8_nospike.jsonl.gz",
+    "source_sha256_in_meta": "b9aee3a57ecf5d6518987ee4c8446af1450deef32765e0df0882e38cf10dfb02",
+    "launch_file": "train_prochain_v8.sh",
+    "launch_sha256": "3710d1265eb383c2fec1c9dcff88f3b5908cf3aba4c083e57becb39dc9ab614c",
+    "launch_data_basename": "data_prochain_v8",
+    "logged_data_basename": "data_prochain_v8",
+    "logged_output_basename": "out_prochain_v8_r16_98k_0827",
+    "logged_train_samples": 1010,
+    "logged_train_windows": 1010,
+    "log_evidence_lines": {"data_and_count": 18, "output": 20, "data_dir_config": 277}
+  },
+  "shared_meta_properties": {
+    "model_basename": "DeepSeek-V4-Flash-0731",
+    "thinking_mode": "thinking",
+    "reasoning_effort": "source",
+    "src_format": "v",
+    "split_seed": 0,
+    "tokenizer_fingerprint_prefixes": {
+      "config.json": "6c8f3d2d3b487075",
+      "tokenizer.json": "8f9f37ca37fdc4f5",
+      "tokenizer_config.json": "6ac8c8dc065ed118",
+      "encoding/encoding_dsv4.py": "abc0d26120250dda"
+    },
+    "conversion_script_sha256_prefix": "d76deaf5a01aabbb",
+    "conversion_script_git_commit": "unknown"
+  },
+  "limits": "Matching paths, source hashes and recorded counts bind the documented run inputs; this does not revalidate all training binary contents, restore missing code history, or prove unchanged validation-set membership. See training_summary.json for full train.log hashes."
+}

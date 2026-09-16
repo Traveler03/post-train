@@ -7,7 +7,7 @@
 - **个人职责：** 用户明确确认，整个数据合成及 LoRA SFT 过程均由本人搭建。
 - **实现与配置：** 依据用户提供的 GitLab `main`／`milly` ZIP 快照；相关文件已纳入本仓库。
 - **项目过程与效果：** 依据 Notion 导出原文、文字表格和实验截图；相关材料已纳入本仓库。
-- **本次验证：** 有限的现有离线测试；新增训练服务器原始日志和指标的离线核验，没有在本机重跑 GPU 训练或线上评测。
+- **本次验证：** 现有离线测试，以及 pc7/pc8 源文件全量差分、训练日志指标提取和前期同题评测核验；没有重跑 GPU 训练、线上评测或判官调用。
 - **待补关联：** v7 数据已绑定到训练 run 和 step 276 checkpoint；该 checkpoint 与汇总评测结果尚未绑定。
 
 代码快照缺少 Git 作者历史；这不推翻本人已经确认的职责，只限制本次用提交记录进一步核验。
@@ -19,9 +19,6 @@
 | [Pro 流程梳理和训练记录](../source-materials/notion/pro-flow.md) | 工具空间、历史结构、请求边界、数据质量、版本迭代；明确记录 v2.1 删除 v2 的 grad norm 尖峰数据并训练 pc8，内含 27 张本地实验截图 |
 | [Pro 评测结果汇总](../source-materials/notion/pro-benchmark-summary.md) | P0、邮件、日历、Drive、Docs、Sheets、Slides 等汇总表 |
 | [Pro 后训练效果与方法](../source-materials/notion/pro-results.md) | Drive／Docs／Slides 分数、目标工具覆盖、缺口合成、授权情境 |
-| [AutoTask 效果报告](../source-materials/notion/autotask-results.md) | User／Official 评测效果、数据版本与清洗记录 |
-
-AutoTask Pipeline 的早期 Notion 页没有稳定导出文件；仓库内保存了同项目更完整的后续源码文档 [worldgen 全流程详解](../../source-snapshot/milly/docs/rq3w/07_worldgen全流程详解_0820.md)。其中“每条规则最多 30 道”和 2,025→1,637 属于后续更新，不能与早期 2,025 个环境口径混写。
 
 ## Pro 本地源码
 
@@ -55,7 +52,7 @@ AutoTask Pipeline 的早期 Notion 页没有稳定导出文件；仓库内保存
 
 下载的 `val.jsonl` 仅用于本地结构抽查，未提交：它包含完整内部 system prompt、工具 schema 和测试账号信息。抽查结论已写入产物说明。
 
-## Pro v7 训练运行
+## Pro v7 Milly 0827 复跑（不是本次历史 pc7 对照）
 
 | 文件 | 支持内容 |
 |---|---|
@@ -74,16 +71,11 @@ AutoTask Pipeline 的早期 Notion 页没有稳定导出文件；仓库内保存
 - [Notion 原文](../source-materials/notion/pro-flow.md#v2)记录：“v2.1 去掉 v2 里面的 grad norm 尖峰数据（pc8）”。
 - [pc7 checkpoint 总表](../source-materials/notion/pro-flow-assets/image%208.png)记录过滤前版本各 checkpoint；[pc7 三次复测](../source-materials/notion/pro-flow-assets/image%209.png)显示 `s162` 存在明显波动。
 - [pc8 checkpoint 评测图](../source-materials/notion/pro-flow-assets/image%2014.png)记录过滤后版本多个 checkpoint；其中 `pc8_s75` 为 Drive 83.8%、Docs 83.8%、Slides 78.7%。
-- 以 `pc7_s162` 三次复测均值为参照，`pc8_s75` 在 Drive／Docs／Slides 上为 +0.1／+2.3／-0.3pp，三项宏平均约 +0.7pp，支持“现有读数显示小幅整体增益”。当前没有 spike step 到样本 ID 的过滤清单、删除数量、过滤脚本、pc8 训练日志、pc8 多次复测或完整同配方消融，因此不把该增益表述成严格因果。
+- 本次全量核验补齐：源数据 1,149 → 1,057，删除 92 条，无新增或改写；Train 1,102 → 1,010。已找到 pc7/pc8 对应 meta、启动脚本和实际训练日志，聚合证据见[实验报告](spike-study/README.md)。
+- 新报告使用约 0.2–0.8 epoch 同题配对，不再以 pc8 s75 对比 pc7 s162 三次均值。四档综合增益 +2.44～+5.93pp，平均 +4.34pp；单轮、非独立重复，Holm 校正后未达显著。
+- [删除指纹清单](spike-study/artifacts/removed_fingerprints.csv)和[核验脚本](../../scripts/spike/README.md)是事后重建，不是历史选择脚本；完整 spike 到样本映射及多随机种子因果消融仍缺失。
 
-## AutoTask 本地源码
-
-- [训练数据结构与优化记录](../../source-snapshot/milly/docs/rq3w/04_训练数据长什么样_0819.md)
-- [worldgen 全流程详解](../../source-snapshot/milly/docs/rq3w/07_worldgen全流程详解_0820.md)
-- [流水线说明及全部纳入脚本](../../source-snapshot/milly/tools/autotask_pipeline/README.md)
-- [标准答案替换](../../source-snapshot/milly/projects/autotask_testset_aligned/scripts/regold_batch.py)
-
-源码快照中的两处 Langfuse 明文凭据已改成环境变量读取，个人评测邮箱默认值已删除；具体见[快照说明](../../source-snapshot/README.md)。内部路径和服务地址按 private 仓库用途保留。
+本次新增材料按公开仓库范围处理，只公开聚合统计、单向指纹、曲线和离线脚本，不新增原始轨迹、完整内部日志、账号或服务端点。旧源码快照的适用范围见[快照说明](../../source-snapshot/README.md)，本次不对旧材料作全仓安全审计保证。
 
 ## 输入快照
 

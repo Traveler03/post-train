@@ -1,0 +1,415 @@
+{
+  "scope": "Early checkpoints only, approximately 0.2-0.8 epoch. Not final model performance.",
+  "method": "pc8 minus pc7; matched item_id with PASS/FAIL on both arms; same approximate epoch; pc7 first attempts, s108 explicitly frozen to 02:22 batch.",
+  "combined_definition": "Micro-average across common Drive, Docs and Slides items within each checkpoint pair.",
+  "mean_definition": "Arithmetic mean of the four checkpoint-pair deltas; not independent replications or a pooled significance test.",
+  "mean_delta_pp": 4.342015353593433,
+  "rows": [
+    {
+      "pc7_step": 27,
+      "pc8_step": 25,
+      "pc7_epoch": 0.19600725952813067,
+      "pc8_epoch": 0.19801980198019803,
+      "volumes": {
+        "drive": {
+          "common_items": 128,
+          "original_pass": 94,
+          "filtered_pass": 102,
+          "original_percent": 73.4375,
+          "filtered_percent": 79.6875,
+          "delta_pp": 6.25,
+          "gains": 20,
+          "losses": 12,
+          "mcnemar_exact_p": 0.21532714972272515
+        },
+        "docs": {
+          "common_items": 71,
+          "original_pass": 51,
+          "filtered_pass": 57,
+          "original_percent": 71.83098591549296,
+          "filtered_percent": 80.28169014084507,
+          "delta_pp": 8.450704225352112,
+          "gains": 10,
+          "losses": 4,
+          "mcnemar_exact_p": 0.1795654296875
+        },
+        "slides": {
+          "common_items": 44,
+          "original_pass": 36,
+          "filtered_pass": 36,
+          "original_percent": 81.81818181818181,
+          "filtered_percent": 81.81818181818181,
+          "delta_pp": 0.0,
+          "gains": 3,
+          "losses": 3,
+          "mcnemar_exact_p": 1.0
+        }
+      },
+      "combined": {
+        "common_items": 243,
+        "original_pass": 181,
+        "filtered_pass": 195,
+        "original_percent": 74.48559670781893,
+        "filtered_percent": 80.24691358024691,
+        "delta_pp": 5.761316872427984,
+        "gains": 33,
+        "losses": 19,
+        "mcnemar_exact_p": 0.07039422106706228,
+        "holm_p_four_early_pairs": 0.21118266320118684
+      }
+    },
+    {
+      "pc7_step": 54,
+      "pc8_step": 50,
+      "pc7_epoch": 0.39201451905626133,
+      "pc8_epoch": 0.39603960396039606,
+      "volumes": {
+        "drive": {
+          "common_items": 130,
+          "original_pass": 94,
+          "filtered_pass": 102,
+          "original_percent": 72.3076923076923,
+          "filtered_percent": 78.46153846153847,
+          "delta_pp": 6.153846153846154,
+          "gains": 19,
+          "losses": 11,
+          "mcnemar_exact_p": 0.20048842206597328
+        },
+        "docs": {
+          "common_items": 70,
+          "original_pass": 55,
+          "filtered_pass": 53,
+          "original_percent": 78.57142857142857,
+          "filtered_percent": 75.71428571428571,
+          "delta_pp": -2.857142857142857,
+          "gains": 5,
+          "losses": 7,
+          "mcnemar_exact_p": 0.7744140625
+        },
+        "slides": {
+          "common_items": 47,
+          "original_pass": 36,
+          "filtered_pass": 38,
+          "original_percent": 76.59574468085107,
+          "filtered_percent": 80.85106382978724,
+          "delta_pp": 4.25531914893617,
+          "gains": 6,
+          "losses": 4,
+          "mcnemar_exact_p": 0.75390625
+        }
+      },
+      "combined": {
+        "common_items": 247,
+        "original_pass": 185,
+        "filtered_pass": 193,
+        "original_percent": 74.89878542510121,
+        "filtered_percent": 78.13765182186235,
+        "delta_pp": 3.2388663967611335,
+        "gains": 30,
+        "losses": 22,
+        "mcnemar_exact_p": 0.3317497633694906,
+        "holm_p_four_early_pairs": 0.6634995267389812
+      }
+    },
+    {
+      "pc7_step": 81,
+      "pc8_step": 75,
+      "pc7_epoch": 0.588021778584392,
+      "pc8_epoch": 0.594059405940594,
+      "volumes": {
+        "drive": {
+          "common_items": 136,
+          "original_pass": 106,
+          "filtered_pass": 114,
+          "original_percent": 77.94117647058823,
+          "filtered_percent": 83.82352941176471,
+          "delta_pp": 5.882352941176471,
+          "gains": 16,
+          "losses": 8,
+          "mcnemar_exact_p": 0.15158963203430176
+        },
+        "docs": {
+          "common_items": 71,
+          "original_pass": 54,
+          "filtered_pass": 59,
+          "original_percent": 76.05633802816901,
+          "filtered_percent": 83.09859154929578,
+          "delta_pp": 7.042253521126761,
+          "gains": 7,
+          "losses": 2,
+          "mcnemar_exact_p": 0.1796875
+        },
+        "slides": {
+          "common_items": 46,
+          "original_pass": 34,
+          "filtered_pass": 36,
+          "original_percent": 73.91304347826087,
+          "filtered_percent": 78.26086956521739,
+          "delta_pp": 4.3478260869565215,
+          "gains": 7,
+          "losses": 5,
+          "mcnemar_exact_p": 0.7744140625
+        }
+      },
+      "combined": {
+        "common_items": 253,
+        "original_pass": 194,
+        "filtered_pass": 209,
+        "original_percent": 76.6798418972332,
+        "filtered_percent": 82.6086956521739,
+        "delta_pp": 5.928853754940712,
+        "gains": 30,
+        "losses": 15,
+        "mcnemar_exact_p": 0.035697803555194696,
+        "holm_p_four_early_pairs": 0.14279121422077878
+      }
+    },
+    {
+      "pc7_step": 108,
+      "pc8_step": 100,
+      "pc7_epoch": 0.7840290381125227,
+      "pc8_epoch": 0.7920792079207921,
+      "volumes": {
+        "drive": {
+          "common_items": 129,
+          "original_pass": 96,
+          "filtered_pass": 106,
+          "original_percent": 74.4186046511628,
+          "filtered_percent": 82.17054263565892,
+          "delta_pp": 7.751937984496124,
+          "gains": 20,
+          "losses": 10,
+          "mcnemar_exact_p": 0.09873714670538902
+        },
+        "docs": {
+          "common_items": 73,
+          "original_pass": 56,
+          "filtered_pass": 54,
+          "original_percent": 76.71232876712328,
+          "filtered_percent": 73.97260273972603,
+          "delta_pp": -2.73972602739726,
+          "gains": 3,
+          "losses": 5,
+          "mcnemar_exact_p": 0.7265625
+        },
+        "slides": {
+          "common_items": 44,
+          "original_pass": 37,
+          "filtered_pass": 35,
+          "original_percent": 84.0909090909091,
+          "filtered_percent": 79.54545454545455,
+          "delta_pp": -4.545454545454546,
+          "gains": 2,
+          "losses": 4,
+          "mcnemar_exact_p": 0.6875
+        }
+      },
+      "combined": {
+        "common_items": 246,
+        "original_pass": 189,
+        "filtered_pass": 195,
+        "original_percent": 76.82926829268293,
+        "filtered_percent": 79.26829268292683,
+        "delta_pp": 2.4390243902439024,
+        "gains": 25,
+        "losses": 19,
+        "mcnemar_exact_p": 0.4513808323961257,
+        "holm_p_four_early_pairs": 0.6634995267389812
+      }
+    }
+  ],
+  "sources": [
+    {
+      "tag": "pc7_s108_docs_a1",
+      "run_file": "pc7_s108_docs_a1_-_2026-08-27_02_22_58.400_complete.json",
+      "sha256": "75bd9057ed6e0592f5b136e3aa1c2edfa1e6ac6a9bb417b9773913761376705b",
+      "cases": 74,
+      "judged": 74,
+      "pass": 57
+    },
+    {
+      "tag": "pc7_s108_drive_a1",
+      "run_file": "pc7_s108_drive_a1_-_2026-08-27_02_22_35.705_complete.json",
+      "sha256": "f9706a4f8fdf8ff258f9aefb9e645319dcc2f24d519ba1612b05dc8fd92dca40",
+      "cases": 135,
+      "judged": 133,
+      "pass": 100
+    },
+    {
+      "tag": "pc7_s108_slides_a1",
+      "run_file": "pc7_s108_slides_a1_-_2026-08-27_02_23_34.805_complete.json",
+      "sha256": "98ade3bf1cf50ef91fa77020253ffce60a4fb4a911eb393f8f5c400a655b1502",
+      "cases": 50,
+      "judged": 46,
+      "pass": 38
+    },
+    {
+      "tag": "pc7_s27_docs_a1",
+      "run_file": "pc7_s27_docs_a1_-_2026-08-27_00_34_24.032_complete.json",
+      "sha256": "0172a75022df5f50a0334446ede43179407a087c324b5f89f8dd381f492fcdb3",
+      "cases": 74,
+      "judged": 73,
+      "pass": 52
+    },
+    {
+      "tag": "pc7_s27_drive_a1",
+      "run_file": "pc7_s27_drive_a1_-_2026-08-27_00_33_51.374_complete.json",
+      "sha256": "71a58f9d2c485fb5993ad27394157b94376baae4003c51889c0f2e87e2349217",
+      "cases": 136,
+      "judged": 130,
+      "pass": 95
+    },
+    {
+      "tag": "pc7_s27_slides_a1",
+      "run_file": "pc7_s27_slides_a1_-_2026-08-27_00_34_54.438_complete.json",
+      "sha256": "11830741cf126a3d768b9507d1f6b7d739cf3a4ef79d2357cc186063f821853b",
+      "cases": 50,
+      "judged": 45,
+      "pass": 36
+    },
+    {
+      "tag": "pc7_s54_docs_a1",
+      "run_file": "pc7_s54_docs_a1_-_2026-08-27_01_21_30.352_complete.json",
+      "sha256": "6e363428bc86436f2c236c7e7871001b2cd9448f425391872477da6d1dd2f321",
+      "cases": 74,
+      "judged": 72,
+      "pass": 56
+    },
+    {
+      "tag": "pc7_s54_drive_a1",
+      "run_file": "pc7_s54_drive_a1_-_2026-08-27_01_21_03.972_complete.json",
+      "sha256": "9308c19061f6bd0646dd62aa8a27a07011a944e970cf9ee6e20511f7dd102481",
+      "cases": 136,
+      "judged": 133,
+      "pass": 97
+    },
+    {
+      "tag": "pc7_s54_slides_a1",
+      "run_file": "pc7_s54_slides_a1_-_2026-08-27_01_21_53.564_complete.json",
+      "sha256": "a154ec445760ff161aed4db9a00ff88eb8c5fc61b432bcc62237ca8e6c4be996",
+      "cases": 50,
+      "judged": 47,
+      "pass": 36
+    },
+    {
+      "tag": "pc7_s81_docs_a1",
+      "run_file": "pc7_s81_docs_a1_-_2026-08-27_01_54_49.858_complete.json",
+      "sha256": "8cdaad24772e1d4180cfb1ea99864d3a8feeccab9c0d56cdbf4bd79c8ab0f5c7",
+      "cases": 72,
+      "judged": 71,
+      "pass": 54
+    },
+    {
+      "tag": "pc7_s81_drive_a1",
+      "run_file": "pc7_s81_drive_a1_-_2026-08-27_01_54_23.876_complete.json",
+      "sha256": "a1088ab5b97aa2e98948a327bc3a031e676c532b0ceeaf049875d24c43324272",
+      "cases": 136,
+      "judged": 136,
+      "pass": 106
+    },
+    {
+      "tag": "pc7_s81_slides_a1",
+      "run_file": "pc7_s81_slides_a1_-_2026-08-27_01_56_08.899_complete.json",
+      "sha256": "f74a30674af3d33e3f6edeeb424b627426e73c7161affb6967debf29e33a1e16",
+      "cases": 50,
+      "judged": 46,
+      "pass": 34
+    },
+    {
+      "tag": "pc8_s100_docs_a1",
+      "run_file": "pc8_s100_docs_a1_-_2026-08-27_13_39_58.956_complete.json",
+      "sha256": "c8bb610ce121f57559d6c370e3dfc4fa328a95ad45537d923b890d0f6915cc47",
+      "cases": 74,
+      "judged": 73,
+      "pass": 54
+    },
+    {
+      "tag": "pc8_s100_drive_a1",
+      "run_file": "pc8_s100_drive_a1_-_2026-08-27_13_39_35.021_complete.json",
+      "sha256": "ed37e6ca84629c7e73f6dfb3659be7de6279a8270cb666948e3fa89d1b28bfec",
+      "cases": 135,
+      "judged": 132,
+      "pass": 109
+    },
+    {
+      "tag": "pc8_s100_slides_a1",
+      "run_file": "pc8_s100_slides_a1_-_2026-08-27_13_40_23.542_complete.json",
+      "sha256": "f1f36bc213e513727302803feeb16d85524aa2d2b535891a7d0c243f2ea21882",
+      "cases": 50,
+      "judged": 45,
+      "pass": 36
+    },
+    {
+      "tag": "pc8_s25_docs_b1",
+      "run_file": "pc8_s25_docs_b1_-_2026-08-27_08_15_10.490_complete.json",
+      "sha256": "8bc0693aef2bf2f59b1db568ee20768083d3f607e5e25868f1be3e9163a69423",
+      "cases": 74,
+      "judged": 72,
+      "pass": 57
+    },
+    {
+      "tag": "pc8_s25_drive_b1",
+      "run_file": "pc8_s25_drive_b1_-_2026-08-27_08_14_47.022_complete.json",
+      "sha256": "ca08b3f329a45a7359d09f54e2ef1d3a653094b8a8cb3575ff94b14790c71e38",
+      "cases": 136,
+      "judged": 134,
+      "pass": 104
+    },
+    {
+      "tag": "pc8_s25_slides_b1",
+      "run_file": "pc8_s25_slides_b1_-_2026-08-27_08_15_33.624_complete.json",
+      "sha256": "8b257de741edcadfbe00fcbb2cf249799490ff9c9d095707526a1e77c63e5709",
+      "cases": 50,
+      "judged": 46,
+      "pass": 37
+    },
+    {
+      "tag": "pc8_s50_docs_b1",
+      "run_file": "pc8_s50_docs_b1_-_2026-08-27_08_16_45.029_complete.json",
+      "sha256": "b7d839d0478609edbf44b8731b3d7d7766c578d7eeac77300ba7c2c1f11847ab",
+      "cases": 74,
+      "judged": 72,
+      "pass": 54
+    },
+    {
+      "tag": "pc8_s50_drive_b1",
+      "run_file": "pc8_s50_drive_b1_-_2026-08-27_08_16_09.610_complete.json",
+      "sha256": "2d181a87f2efdada7a171ef4cc31bef8a429153075906ed53e18deb5900490c0",
+      "cases": 136,
+      "judged": 132,
+      "pass": 104
+    },
+    {
+      "tag": "pc8_s50_slides_b1",
+      "run_file": "pc8_s50_slides_b1_-_2026-08-27_08_17_04.610_complete.json",
+      "sha256": "ea6105d20490d4afc75189c8042c6262bdee9b59ad01b519135957897d0983de",
+      "cases": 50,
+      "judged": 47,
+      "pass": 38
+    },
+    {
+      "tag": "pc8_s75_docs_a1",
+      "run_file": "pc8_s75_docs_a1_-_2026-08-27_12_53_27.229_complete.json",
+      "sha256": "6aa47054a20a615184194e74a75ab786260bf57e6be1cefcc922a23ff1365cce",
+      "cases": 74,
+      "judged": 74,
+      "pass": 62
+    },
+    {
+      "tag": "pc8_s75_drive_a1",
+      "run_file": "pc8_s75_drive_a1_-_2026-08-27_12_53_07.096_complete.json",
+      "sha256": "8eca4945d4fc2a4a45070ea2e36bb10c9abe7ffc0f60ad48e0600f8980441473",
+      "cases": 136,
+      "judged": 136,
+      "pass": 114
+    },
+    {
+      "tag": "pc8_s75_slides_a1",
+      "run_file": "pc8_s75_slides_a1_-_2026-08-27_12_53_46.134_complete.json",
+      "sha256": "10f0896775835ae368c269cc74e6eb4c2a9f8461a661b660c333b6cce879ec2a",
+      "cases": 50,
+      "judged": 47,
+      "pass": 37
+    }
+  ]
+}
