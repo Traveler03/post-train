@@ -11,6 +11,7 @@
 
 | 想了解什么 | 文档 |
 |---|---|
+| 真实合成 Pipeline：合成了什么、怎样准备环境、执行、判分并产出 SFT | [数据合成 Pipeline 详解](docs/pro/data-construction.md) |
 | Check 有哪些维度、如何评分、不同 Rollout 的流程与轮次 | [Check 与 Rollout 代码核查](docs/reference/check-and-rollout.md) |
 | 最终 SFT 有多少轮交互、一条真实样本长什么样 | [SFT 交互统计与逐消息展开](docs/pro/sft-interactions.md) |
 | Docs/Drive RL 总入口 | [Docs/Drive Agent RL](docs/docs-drive-rl/README.md) |
@@ -20,7 +21,6 @@
 | Docs/Drive 简历与面试 | [简历表述](docs/docs-drive-rl/resume.md) · [面试准备](docs/docs-drive-rl/interview.md) |
 | 项目背景、个人职责、完整讲述 | [项目说明](docs/pro/project.md) |
 | 线上轨迹、能力缺口、任务合成、拒绝采样 | [数据流水线](docs/pro/data-pipeline.md) |
-| 线上日志怎样变成 query、文件环境和 SFT 轨迹 | [完整数据构造流程](docs/pro/data-construction.md) |
 | 多轮监督、LoRA 挂点、长上下文和训练配置 | [LoRA SFT](docs/pro/lora-sft.md) |
 | 效果数字、比较条件、退化和实验绑定 | [评测与结果](docs/pro/evaluation.md) |
 | 可直接修改的简历条目、面试开场 | [简历与介绍](docs/pro/resume.md) |
@@ -41,6 +41,8 @@
 完整架构、公式、1,080 条 Rollout 回放和结果边界见 [Docs/Drive Agent RL](docs/docs-drive-rl/README.md)。
 
 ## Pro 六步项目主线
+
+数据合成的详细入口：[Pro 数据合成 Pipeline](docs/pro/data-construction.md)。文档逐项说明脚本输入与产物、query / seed / 验收目标的分工、Slides 文件准备、上传与账号环境、实际 Rollout、PASS 收割、监督格式、版本漏斗与检查边界；[真实轨迹及 assistant 输出结构](docs/pro/sft-interactions.md)单独展开。
 
 1. **定义业务问题：** 分析 Pro 线上任务、工具覆盖和失败类型，定位复杂编辑、权限处理和多步执行等能力缺口。
 2. **合成与筛选数据：** 从线上日志提取需求、补齐上下文并改写为独立 query，构造可执行环境与缺口任务，通过新的 Rollout、判官和清理得到可用轨迹。

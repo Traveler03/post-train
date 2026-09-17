@@ -45,6 +45,16 @@ def source(path, digest):
     return {"basename": path.name, "bytes": path.stat().st_size, "sha256": digest.hexdigest()}
 
 
+def has_text(message):
+    content = message.get("content")
+    return isinstance(content, str) and bool(content.strip())
+
+
+def is_transfer_call(call):
+    function = call.get("function") if isinstance(call, dict) else None
+    return isinstance(function, dict) and function.get("name") == "transfer_to_agent"
+
+
 def audit_train(path):
     digest = hashlib.sha256()
     features = {name: [] for name in (
@@ -53,6 +63,14 @@ def audit_train(path):
     )}
     roles = Counter()
     unsupervised_assistant = 0
+    shapes = Counter({name: 0 for name in (
+        "tool_calls_then_text_reply", "direct_text_reply", "ends_with_tool_calls", "other",
+    )})
+    structure = Counter({name: 0 for name in (
+        "records_with_intermediate_non_tool_assistant_turns",
+        "records_ending_with_only_transfer_to_agent_calls",
+        "supervised_tool_call_turns", "supervised_tool_call_turns_with_nonempty_content",
+    )})
     for line_number, row in read_rows(path, digest):
         messages, supervision = row.get("messages"), row.get("sup")
         if not isinstance(messages, list) or not isinstance(supervision, list):
@@ -60,6 +78,7 @@ def audit_train(path):
         if len(messages) != len(supervision) or any(type(flag) is not bool for flag in supervision):
             raise ValueError(f"Invalid supervision alignment at line {line_number}")
         counts = Counter(messages=len(messages))
+        turns = []
         for message, supervised in zip(messages, supervision):
             if not isinstance(message, dict) or message.get("role") not in {"system", "user", "assistant", "tool"}:
                 raise ValueError(f"Unsupported message structure at line {line_number}")
@@ -76,10 +95,29 @@ def audit_train(path):
                 counts["tool_call_turns"] += bool(calls)
                 counts["tool_calls"] += len(calls)
                 unsupervised_assistant += not supervised
+                if supervised:
+                    turns.append(message)
+                    structure["supervised_tool_call_turns"] += bool(calls)
+                    structure["supervised_tool_call_turns_with_nonempty_content"] += bool(calls) and has_text(message)
             counts["tool_result_messages"] += role == "tool"
             counts["user_role_messages"] += role == "user"
         for name, values in features.items():
             values.append(counts[name])
+        call_flags = [bool(message.get("tool_calls")) for message in turns]
+        if turns:
+            structure["records_with_intermediate_non_tool_assistant_turns"] += any(
+                not flag for flag in call_flags[:-1]
+            )
+        if turns and call_flags[-1]:
+            shapes["ends_with_tool_calls"] += 1
+            structure["records_ending_with_only_transfer_to_agent_calls"] += all(
+                is_transfer_call(call) for call in turns[-1]["tool_calls"]
+            )
+        elif turns and all(call_flags[:-1]) and has_text(turns[-1]):
+            shape = "direct_text_reply" if len(turns) == 1 else "tool_calls_then_text_reply"
+            shapes[shape] += 1
+        else:
+            shapes["other"] += 1
     records = len(features["messages"])
     return {
         "source": source(path, digest),
@@ -93,6 +131,7 @@ def audit_train(path):
         "records_with_at_least_two_supervised_turns": sum(
             value >= 2 for value in features["supervised_assistant_turns"]
         ),
+        "turn_structure": {"trajectory_shapes": dict(shapes), **structure},
     }
 
 
@@ -124,6 +163,7 @@ def main():
             "tool_call_turns": "assistant messages containing at least one tool_call; a batch counts once",
             "tool_calls": "number of tool_calls entries; includes transfer calls without requiring a reply",
             "user_role_messages": "message-role count, not a count of human requests",
+            "turn_structure": "only sup=true assistant messages; text means non-whitespace string content; shapes partition records",
         },
         "train": audit_train(args.train),
     }

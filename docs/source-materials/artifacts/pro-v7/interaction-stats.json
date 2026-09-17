@@ -5,7 +5,8 @@
     "supervised_assistant_turns": "assistant messages with sup=true, including final responses",
     "tool_call_turns": "assistant messages containing at least one tool_call; a batch counts once",
     "tool_calls": "number of tool_calls entries; includes transfer calls without requiring a reply",
-    "user_role_messages": "message-role count, not a count of human requests"
+    "user_role_messages": "message-role count, not a count of human requests",
+    "turn_structure": "only sup=true assistant messages; text means non-whitespace string content; shapes partition records"
   },
   "train": {
     "source": {
@@ -223,7 +224,19 @@
       "user": 2369
     },
     "unsupervised_assistant_messages": 1102,
-    "records_with_at_least_two_supervised_turns": 1087
+    "records_with_at_least_two_supervised_turns": 1087,
+    "turn_structure": {
+      "trajectory_shapes": {
+        "tool_calls_then_text_reply": 1029,
+        "direct_text_reply": 8,
+        "ends_with_tool_calls": 65,
+        "other": 0
+      },
+      "records_with_intermediate_non_tool_assistant_turns": 0,
+      "records_ending_with_only_transfer_to_agent_calls": 65,
+      "supervised_tool_call_turns": 5097,
+      "supervised_tool_call_turns_with_nonempty_content": 2299
+    }
   },
   "upstream_rollouts": {
     "source": {

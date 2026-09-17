@@ -44,7 +44,7 @@
 
 ## 数据构造链路补充核查
 
-核验日期：2026-09-16。以下路径相对内部工作区，不是本仓库的可点击源码链接；这里只公开流程总结和实现定位，不拷贝原文、线上数据或带服务配置的脚本。读者入口为[从线上日志到 SFT](data-construction.md)。
+核验日期：2026-09-16；2026-09-17 扩充逐阶段核查。以下路径相对内部工作区，不是本仓库的可点击源码链接；这里只公开流程总结和实现定位，不拷贝原文、线上数据或带服务配置的脚本。读者入口为[数据合成 Pipeline 详解](data-construction.md)。
 
 1. `lsy/main/script/mine_synthesis_queries.py`：候选元信息筛选、`user_turn_boundary` 定位当前轮、`_strip_injections` 后写入 `query`，以及 query 去重和评测相似性排除。代码没有“必须 FAIL”的筛选条件。
 2. `lsy/main/script/materialize_v1_full_traces.py`：按日期和 `trace_id` 回查完整记录，保留 `contents / output / tool_spans`，合入 `v1_query` 等标签。
@@ -57,16 +57,32 @@
 9. `lsy/main/v2/doc/prochain_v1数据构建说明_0827补记.md`：真实需求种子、中文改写、人造环境、重新执行后收集 PASS 的历史链路；其中部分内容为事后补记。
 10. `lsy/main/v2/doc/prochain_v2数据构建说明_0826.md`：新增 query 的 792 → 525 → 519 → 468 漏斗、最终 681 + 468 = 1,149 的构成、格式清理及未运行通用 `merge_filter.py` 的边界。
 
+2026-09-17 进一步核对下列操作边界，均为只读检查：
+
+| 实现 | 补充确认 |
+|---|---|
+| gen_worlds_prochain.py:gen_one() / main() | 一次修复重试、逐 case / 增量落盘、最终 worlds.jsonl 也保留失败记录 |
+| gen_worlds_prochain.py:materialize_slides_binaries() | 可选 PPTX 生成与上传，回填 content_url / source_binary_mime；失败不保证自动阻止后续 CSV 导出 |
+| build_dataset_csv.py:flatten_seed() / main() | 未物化 Slides 只给 warning；没有统一按 ok 过滤输入；seed 地址先写占位符，--upload 当前直接退出 |
+| upload_seeds.py、upload_csv_to_langfuse.py:row_to_item() | 独立上传 seed、回填地址、拒绝残余上传占位符；后者默认 dry-run，且没有透传 CSV metadata.user_email |
+| fire_batch.py:submit_e2e() / main() | e2e 执行与判官配置、默认 dry-run、真实提交后的任务跟踪 |
+| harvest_pass.py:harvest_one() / main() | 使用预先选出的 PASS 名单，筛目标模型最后一次累计输入与 output；收割异常和批次输出边界 |
+| to_sft_reasoning.py:_process_one() | 多项质量指标仅记录信号；不能把这些能力算作历史 v1/v2 已执行的全部过滤 |
+| dsv4_run/prep_prochain.py:to_openai() / main() | 文字与同次工具调用合并、调用结果关联、窄化的转交终局例外、分组 key 回退逻辑 |
+
+这些是当前本地实现的核查结论，不代表历史每批都使用当前通用入口。尤其账号字段、工具灰度分支、失败 world 是否入选，仍需对照最终平台 item 与运行记录，不能仅凭脚本默认值或 CSV 推断。
+
 来源模型、执行模型与判官是不同角色；执行时 High/Low 档位的历史口径有冲突，流程总结只报告确认的模型版本。上述代码核查没有触发数据生成、收割、判官或训练，也不是对所有最终样本 PASS 的重新认证。版本级构成记录与逐条来源链核验不能混为一谈。
 
 ## Pro v7 数据产物
 
-2026-09-17 补充直接读取最终 train.jsonl 及上游保存轨迹的交互计数，原文件指纹与已有 train-structure.json 一致；只读获取固定版本「综合评估Prompt」v61，并核对本地多用户轮生成、收割及 Runner。没有重新运行模型、判官推理或训练。
+2026-09-17 补充直接读取最终 train.jsonl 及上游保存轨迹的交互计数，原文件指纹与已有 train-structure.json 一致；进一步全量核对 1,029 条工具后回复、8 条直接回复、65 条转交终局，以及 2,299 / 5,097 个工具调用轮同时带正文。对应统计纳入同一离线脚本与 JSON。另只读获取固定版本「综合评估Prompt」v61，并核对本地多用户轮生成、收割及 Runner。没有重新运行模型、判官推理或训练。
 
 新增材料：
 
 - [Check、评分与 Rollout 核查](../reference/check-and-rollout.md)：D1–D5、severity、RL reward、过程状态检查和版本差异。
 - [最终 SFT 交互统计与样本](sft-interactions.md)：1,102 条的全量统计与第一条训练记录的脱敏结构展开。
+- [数据合成 Pipeline 详解](data-construction.md)：从需求、环境与验收目标，到实际执行、收割、SFT 的逐阶段产物；包含虚构字段示例及当前实现与历史批次的区别。
 - [聚合统计 JSON](../source-materials/artifacts/pro-v7/interaction-stats.json)及[离线复算脚本](../../scripts/audit_sft_interactions.py)：只输出聚合数与指纹。
 - [轨迹结构摘要](../source-materials/artifacts/pro-v7/trajectory-example-outline.json)：保留顺序、工具类型和 sup，不含原始正文、参数、账号或思考内容；不是训练记录。
 

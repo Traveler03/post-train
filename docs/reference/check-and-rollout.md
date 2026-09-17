@@ -87,6 +87,8 @@ reward = 0.7 × I(综合 PASS) + 0.3 × mean(I(D1 PASS), …, I(D5 PASS))
 | 中文占比低、重复文件名、部分正文/Slides 内容缺失、疑似缺少干扰项 | 记录 warning，不自动全部剔除 |
 | 上游 rewrite_ok=False | gen_one() 直接跳过，不回退使用原始 query |
 
+这里的“返回失败”是校验函数的结果，不代表所有下游自动拦截：当前世界生成器在最终 worlds.jsonl 中也保存失败记录，CSV 导出入口未统一按 ok 过滤；未物化的 Slides 也只是 warning。上传前的入选检查、二进制准备与 seed 地址回填见 [Pipeline 的实际检查边界](../pro/data-construction.md)。
+
 PASS 之后还需去重、核对目标模型、清理无有效终局和协议泄漏、分离思考与正文、处理训练长度和监督标记。v1/v2 构建记录明确没有运行通用 `merge_filter.py`；不能把其中所有规则算成这批数据已执行的检查。去 Spike 是对已构造数据的后续筛选，现有材料未复原完整候选选择规则。
 
 ## 2. Pro 一条任务如何合成并 Rollout

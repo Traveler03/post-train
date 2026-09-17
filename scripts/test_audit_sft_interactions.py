@@ -89,6 +89,35 @@ class InteractionAuditTests(unittest.TestCase):
             with self.subTest(count=count), self.assertRaises(ValueError):
                 audit_rollouts(MemoryJSONL([{"n_call_llm_this_turn": count}]))
 
+    def test_trajectory_shapes_and_text_during_calls(self):
+        def assistant(content="", tool=None):
+            message = {"role": "assistant", "content": content}
+            if tool:
+                message["tool_calls"] = [{"function": {"name": tool}}]
+            return message
+
+        turns_by_record = [
+            [assistant("查询中", "search"), assistant("结果")],
+            [assistant("直接回复")],
+            [assistant(tool="transfer_to_agent")],
+            [assistant("中间说明"), assistant(tool="search"), assistant("结果")],
+            [assistant("  ")],
+            [assistant(tool="search")],
+        ]
+        rows = [{
+            "messages": [assistant("不监督的初始化说明"), *turns],
+            "sup": [False] + [True] * len(turns),
+        } for turns in turns_by_record]
+        structure = audit_train(MemoryJSONL(rows))["turn_structure"]
+        self.assertEqual(structure["trajectory_shapes"], {
+            "tool_calls_then_text_reply": 1, "direct_text_reply": 1,
+            "ends_with_tool_calls": 2, "other": 2,
+        })
+        self.assertEqual(structure["records_with_intermediate_non_tool_assistant_turns"], 1)
+        self.assertEqual(structure["records_ending_with_only_transfer_to_agent_calls"], 1)
+        self.assertEqual(structure["supervised_tool_call_turns"], 4)
+        self.assertEqual(structure["supervised_tool_call_turns_with_nonempty_content"], 1)
+
 
 class PublishedInteractionTests(unittest.TestCase):
     def test_published_statistics_match_prior_audit(self):
@@ -112,6 +141,17 @@ class PublishedInteractionTests(unittest.TestCase):
                 sum(item["value"] * item["records"] for item in bins),
                 train["statistics"][name]["total"],
             )
+        structure = train["turn_structure"]
+        shapes = structure["trajectory_shapes"]
+        self.assertEqual(sum(shapes.values()), train["records"])
+        self.assertEqual(shapes, {
+            "tool_calls_then_text_reply": 1029, "direct_text_reply": 8,
+            "ends_with_tool_calls": 65, "other": 0,
+        })
+        self.assertEqual(structure["records_with_intermediate_non_tool_assistant_turns"], 0)
+        self.assertEqual(structure["records_ending_with_only_transfer_to_agent_calls"], 65)
+        self.assertEqual(structure["supervised_tool_call_turns"], train["statistics"]["tool_call_turns"]["total"])
+        self.assertEqual(structure["supervised_tool_call_turns_with_nonempty_content"], 2299)
 
     def test_outline_internal_consistency(self):
         base = Path(__file__).resolve().parents[1] / "docs/source-materials/artifacts/pro-v7"

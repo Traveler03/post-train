@@ -34,6 +34,23 @@
 - “发起工具调用的轮数”不保证每次都有一条普通 tool 返回。例如转交是不同的终止形式；全集 8,140 次调用与 8,075 条结果消息不一一相等。本统计没有据此完成全量调用链完整性审计。
 - 工具 schema 数表示可用动作空间，不是实际调用次数。示例有 32 个 schema，但仅调用 11 次工具。
 
+### 轨迹是否都是前面调工具，最后才回复
+
+全量补充统计只看 sup=true 的 assistant 消息，排除平台初始化应答；“文字”定义为非空白的字符串 content。
+
+| 轨迹形态 | 条数 | 占比 |
+|---|---:|---:|
+| 前面各轮都有工具调用，最后一轮有文字且不调工具 | 1,029 | 93.4% |
+| 只有一轮直接文字回复，不调工具 | 8 | 0.7% |
+| 最后仍是工具调用 | 65 | 5.9% |
+| 其他形态 | 0 | 0.0% |
+
+65 条工具调用终局全部以 transfer_to_agent 转交结束；这不表示后续代理任务的结果也保存在同一条记录中。其余 1,037 条以无工具调用的文字回复结束，其中也可能是询问或确认，不代表业务动作全部完成。
+
+**5,097 个工具调用轮中，有 2,299 个同时带非空 content，约 45.1%。** 因此不能说“前面全部只有思考和工具调用，最后才出现文字”。本批没有发现中间独立的、不带工具调用的监督 assistant 消息，但它不是通用 Agent 协议的限制。
+
+互斥的形态计数及正文伴随调用的统计已加入 [interaction-stats.json](../source-materials/artifacts/pro-v7/interaction-stats.json) 的 train.turn_structure，可用同一复算脚本重新计算。正文是声明、进度说明还是其他内容，本统计没有逐条做语义分类。
+
 ### 上游 Rollout 与最终 SFT 分母不同
 
 | 数据 | 条数 | 模型轮数/监督轮数平均 | 中位数 | P90 | 范围 |
@@ -96,6 +113,62 @@ meta：来源字段，本文件中这些字段均为空
 上述六条 assistant 含独立 `reasoning_content`；调用轮使用 `tool_calls` 表示动作，最终答复使用 `content`。工具结果用 `tool_call_id` 关联调用。训练监督包括选中的思考、工具选择、调用参数和回复；system/user/tool 只提供上下文。一条完整轨迹保存为一条 SFT 样本，并没有因为六轮监督就拆成六条训练记录。
 
 为了便于逐项核对，仓库另存 [脱敏结构摘要](../source-materials/artifacts/pro-v7/trajectory-example-outline.json)。它只有角色、工具名称、内容摘要、消息下标和监督标记，不能替代原始训练样本。第一条结构可与保存轨迹核对，不表示已恢复所有 1,102 条样本的完整来源链。
+
+### assistant 调工具时具体是什么结构
+
+下面保留第一条样本对应消息的字段形态；调用 ID 和参数均为替代值，思考正文省略，最终回复为脱敏转述。它们是最终 SFT 的消息结构片段，不是整条训练记录，也不是直接展示在产品界面的完整 JSON。
+
+第 1 个参与监督的 assistant 输出包含两个调用，content 为空：
+
+```json
+{
+  "role": "assistant",
+  "reasoning_content": "[原始思考正文省略]",
+  "content": "",
+  "tool_calls": [
+    {
+      "id": "call_example_1",
+      "type": "function",
+      "function": {
+        "name": "memory_search",
+        "arguments": "{\"query\":\"<脱敏查询内容1>\"}"
+      }
+    },
+    {
+      "id": "call_example_2",
+      "type": "function",
+      "function": {
+        "name": "memory_search",
+        "arguments": "{\"query\":\"<脱敏查询内容2>\"}"
+      }
+    }
+  ]
+}
+```
+
+环境执行后为每个调用追加结果；下面只展示第一个返回的结构，另一个用 call_example_2 关联：
+
+```json
+{
+  "role": "tool",
+  "tool_call_id": "call_example_1",
+  "content": "[实际工具返回正文省略]"
+}
+```
+
+最终第 6 个参与监督的 assistant 输出没有 tool_calls，正文在 content 中：
+
+```json
+{
+  "role": "assistant",
+  "reasoning_content": "[原始思考正文省略]",
+  "content": "已找到四页的客户拜访模板。开始复制前，请提供具体客户名称；日期将使用本周五，其余占位符保持不变。"
+}
+```
+
+这条样本前五个监督 assistant 消息的 content 都为空，但全部有 reasoning_content 和 tool_calls；最后一个有 reasoning_content 和回复正文。只能据此描述这一条，不能套到全量样本；全量存在大量 content 与 tool_calls 同时非空的轮次。
+
+sup 保存在顶层数组中，不是每条 message 必须自带的字段。本例的调用消息和最终回复都监督，工具返回不监督；arguments 在最终格式中是 JSON 字符串。更完整的来源与转换步骤见 [数据合成 Pipeline](data-construction.md)。
 
 ## 3. 如何复算
 
