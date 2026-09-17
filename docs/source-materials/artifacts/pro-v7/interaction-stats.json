@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "quantile_method": "sorted[floor((n - 1) * p)]; means rounded to six decimals",
+  "definitions": {
+    "supervised_assistant_turns": "assistant messages with sup=true, including final responses",
+    "tool_call_turns": "assistant messages containing at least one tool_call; a batch counts once",
+    "tool_calls": "number of tool_calls entries; includes transfer calls without requiring a reply",
+    "user_role_messages": "message-role count, not a count of human requests"
+  },
+  "train": {
+    "source": {
+      "basename": "train.jsonl",
+      "bytes": 311534235,
+      "sha256": "81584e95e3159c700bded3029c8e38f34e1e09999cfe831dd9c3d58ebfd4110a"
+    },
+    "records": 1102,
+    "statistics": {
+      "messages": {
+        "min": 5,
+        "p50": 15,
+        "p90": 28,
+        "max": 52,
+        "total": 18782,
+        "mean": 17.043557
+      },
+      "assistant_messages": {
+        "min": 2,
+        "p50": 6,
+        "p90": 10,
+        "max": 17,
+        "total": 7236,
+        "mean": 6.566243
+      },
+      "supervised_assistant_turns": {
+        "min": 1,
+        "p50": 5,
+        "p90": 9,
+        "max": 16,
+        "total": 6134,
+        "mean": 5.566243
+      },
+      "tool_call_turns": {
+        "min": 0,
+        "p50": 4,
+        "p90": 8,
+        "max": 15,
+        "total": 5097,
+        "mean": 4.625227
+      },
+      "tool_calls": {
+        "min": 0,
+        "p50": 6,
+        "p90": 15,
+        "max": 36,
+        "total": 8140,
+        "mean": 7.38657
+      },
+      "tool_result_messages": {
+        "min": 0,
+        "p50": 6,
+        "p90": 15,
+        "max": 36,
+        "total": 8075,
+        "mean": 7.327586
+      },
+      "user_role_messages": {
+        "min": 2,
+        "p50": 2,
+        "p90": 3,
+        "max": 3,
+        "total": 2369,
+        "mean": 2.149728
+      }
+    },
+    "histograms": {
+      "supervised_assistant_turns": [
+        {
+          "value": 1,
+          "records": 15
+        },
+        {
+          "value": 2,
+          "records": 93
+        },
+        {
+          "value": 3,
+          "records": 108
+        },
+        {
+          "value": 4,
+          "records": 235
+        },
+        {
+          "value": 5,
+          "records": 200
+        },
+        {
+          "value": 6,
+          "records": 134
+        },
+        {
+          "value": 7,
+          "records": 88
+        },
+        {
+          "value": 8,
+          "records": 64
+        },
+        {
+          "value": 9,
+          "records": 56
+        },
+        {
+          "value": 10,
+          "records": 37
+        },
+        {
+          "value": 11,
+          "records": 33
+        },
+        {
+          "value": 12,
+          "records": 18
+        },
+        {
+          "value": 13,
+          "records": 13
+        },
+        {
+          "value": 14,
+          "records": 6
+        },
+        {
+          "value": 15,
+          "records": 1
+        },
+        {
+          "value": 16,
+          "records": 1
+        }
+      ],
+      "tool_call_turns": [
+        {
+          "value": 0,
+          "records": 8
+        },
+        {
+          "value": 1,
+          "records": 90
+        },
+        {
+          "value": 2,
+          "records": 114
+        },
+        {
+          "value": 3,
+          "records": 232
+        },
+        {
+          "value": 4,
+          "records": 199
+        },
+        {
+          "value": 5,
+          "records": 131
+        },
+        {
+          "value": 6,
+          "records": 95
+        },
+        {
+          "value": 7,
+          "records": 62
+        },
+        {
+          "value": 8,
+          "records": 60
+        },
+        {
+          "value": 9,
+          "records": 36
+        },
+        {
+          "value": 10,
+          "records": 34
+        },
+        {
+          "value": 11,
+          "records": 20
+        },
+        {
+          "value": 12,
+          "records": 12
+        },
+        {
+          "value": 13,
+          "records": 7
+        },
+        {
+          "value": 14,
+          "records": 1
+        },
+        {
+          "value": 15,
+          "records": 1
+        }
+      ],
+      "user_role_messages": [
+        {
+          "value": 2,
+          "records": 937
+        },
+        {
+          "value": 3,
+          "records": 165
+        }
+      ]
+    },
+    "role_counts": {
+      "assistant": 7236,
+      "system": 1102,
+      "tool": 8075,
+      "user": 2369
+    },
+    "unsupervised_assistant_messages": 1102,
+    "records_with_at_least_two_supervised_turns": 1087
+  },
+  "upstream_rollouts": {
+    "source": {
+      "basename": "v2_pass_trajectories.jsonl",
+      "bytes": 325520748,
+      "sha256": "28d0144569919accf3ea287278a8f5ecf78335b852a21e9473205c6ffa5b5c56"
+    },
+    "records": 1149,
+    "recorded_model_calls": {
+      "min": 1,
+      "p50": 5,
+      "p90": 10,
+      "max": 17,
+      "total": 6489,
+      "mean": 5.64752
+    }
+  }
+}

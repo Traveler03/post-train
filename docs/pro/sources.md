@@ -61,6 +61,17 @@
 
 ## Pro v7 数据产物
 
+2026-09-17 补充直接读取最终 train.jsonl 及上游保存轨迹的交互计数，原文件指纹与已有 train-structure.json 一致；只读获取固定版本「综合评估Prompt」v61，并核对本地多用户轮生成、收割及 Runner。没有重新运行模型、判官推理或训练。
+
+新增材料：
+
+- [Check、评分与 Rollout 核查](../reference/check-and-rollout.md)：D1–D5、severity、RL reward、过程状态检查和版本差异。
+- [最终 SFT 交互统计与样本](sft-interactions.md)：1,102 条的全量统计与第一条训练记录的脱敏结构展开。
+- [聚合统计 JSON](../source-materials/artifacts/pro-v7/interaction-stats.json)及[离线复算脚本](../../scripts/audit_sft_interactions.py)：只输出聚合数与指纹。
+- [轨迹结构摘要](../source-materials/artifacts/pro-v7/trajectory-example-outline.json)：保留顺序、工具类型和 sup，不含原始正文、参数、账号或思考内容；不是训练记录。
+
+后续三用户轮分支的实现定位为 `gen_multiturn_queries.py:build_turns()`、`harvest_multiturn.py:verdict_of()/harvest_whole()`、`to_sft_reasoning.py` 的 is_multiturn/no_loss_turns 分支，以及 `beeai_eval/runner/multi_turn_runner.py`。这些未公开原文件仅用作代码核查来源，不据其存在推断 v2 实验采用了该分支。
+
 | 文件 | 支持内容 |
 |---|---|
 | [产物说明](../source-materials/artifacts/pro-v7/README.md) | 规模、切分、token、监督段、窗口结果与证据边界 |

@@ -1,0 +1,202 @@
+{
+  "schema": "sft-trajectory-outline-v1",
+  "not_a_training_record": true,
+  "source": {
+    "basename": "train.jsonl",
+    "sha256": "81584e95e3159c700bded3029c8e38f34e1e09999cfe831dd9c3d58ebfd4110a",
+    "line_number": 1
+  },
+  "privacy_note": "这是实际样本的脱敏结构摘要，不是原始训练 JSON。请求和回复均为转述；省略原始正文、思考、工具参数、账号、资源名称/ID 和内部指令。模板 A/B 为替代名称。",
+  "task_summary": "复制客户拜访模板 A，把标题中的客户名和日期更新为这次客户和本周五，其余占位符保留。请求未提供具体客户名称。",
+  "associated_seed_summary": "包含目标模板 A 和干扰模板 B；此处不公开原始 seed。",
+  "outcome_summary": "找到并读取四页模板后询问客户名称，没有后续用户补充，也没有复制或编辑调用。该样本进入 PASS 池和最终 train，不代表业务任务已全部完成。",
+  "counts": {
+    "messages": 22,
+    "supervised_assistant_turns": 6,
+    "tool_call_turns": 5,
+    "tool_calls": 11,
+    "tool_result_messages": 11,
+    "tool_schemas": 32,
+    "user_role_messages": 3,
+    "human_task_requests": 1
+  },
+  "supervised_message_indices": [
+    4,
+    7,
+    10,
+    12,
+    15,
+    21
+  ],
+  "messages": [
+    {
+      "index": 0,
+      "role": "system",
+      "sup": false,
+      "summary": "系统指令省略。"
+    },
+    {
+      "index": 1,
+      "role": "user",
+      "sup": false,
+      "summary": "平台注入的技能、连接器和用户上下文省略；不是本轮真人请求。"
+    },
+    {
+      "index": 2,
+      "role": "assistant",
+      "sup": false,
+      "summary": "平台预置初始化应答，正文省略。"
+    },
+    {
+      "index": 3,
+      "role": "user",
+      "sup": false,
+      "summary": "请求复制客户拜访模板 A，更新标题的客户名和日期，保留其他占位符。"
+    },
+    {
+      "index": 4,
+      "role": "assistant",
+      "sup": true,
+      "summary": "检索相关记忆。",
+      "reasoning_content_present": true,
+      "tool_names": [
+        "memory_search",
+        "memory_search"
+      ]
+    },
+    {
+      "index": 5,
+      "role": "tool",
+      "sup": false,
+      "summary": "第一次记忆查询未找到相关记忆。"
+    },
+    {
+      "index": 6,
+      "role": "tool",
+      "sup": false,
+      "summary": "第二次记忆查询未找到相关记忆。"
+    },
+    {
+      "index": 7,
+      "role": "assistant",
+      "sup": true,
+      "summary": "搜索 Drive 并补充检索记忆。",
+      "reasoning_content_present": true,
+      "tool_names": [
+        "google_drive_search",
+        "memory_search"
+      ]
+    },
+    {
+      "index": 8,
+      "role": "tool",
+      "sup": false,
+      "summary": "Drive 搜索结果。"
+    },
+    {
+      "index": 9,
+      "role": "tool",
+      "sup": false,
+      "summary": "记忆查询结果。"
+    },
+    {
+      "index": 10,
+      "role": "assistant",
+      "sup": true,
+      "summary": "查找可用的 Slides 工具。",
+      "reasoning_content_present": true,
+      "tool_names": [
+        "tool_search"
+      ]
+    },
+    {
+      "index": 11,
+      "role": "tool",
+      "sup": false,
+      "summary": "Slides 工具定义。"
+    },
+    {
+      "index": 12,
+      "role": "assistant",
+      "sup": true,
+      "summary": "获取幻灯片列表和演示文稿信息。",
+      "reasoning_content_present": true,
+      "tool_names": [
+        "proxy_tool",
+        "proxy_tool"
+      ],
+      "resolved_proxy_tool_names": [
+        "google_slides_list-slides",
+        "google_slides_info"
+      ]
+    },
+    {
+      "index": 13,
+      "role": "tool",
+      "sup": false,
+      "summary": "幻灯片列表。"
+    },
+    {
+      "index": 14,
+      "role": "tool",
+      "sup": false,
+      "summary": "演示文稿信息。"
+    },
+    {
+      "index": 15,
+      "role": "assistant",
+      "sup": true,
+      "summary": "读取四页内容。",
+      "reasoning_content_present": true,
+      "tool_names": [
+        "proxy_tool",
+        "proxy_tool",
+        "proxy_tool",
+        "proxy_tool"
+      ],
+      "resolved_proxy_tool_names": [
+        "google_slides_read-slide",
+        "google_slides_read-slide",
+        "google_slides_read-slide",
+        "google_slides_read-slide"
+      ]
+    },
+    {
+      "index": 16,
+      "role": "tool",
+      "sup": false,
+      "summary": "第一页内容。"
+    },
+    {
+      "index": 17,
+      "role": "tool",
+      "sup": false,
+      "summary": "第二页内容。"
+    },
+    {
+      "index": 18,
+      "role": "tool",
+      "sup": false,
+      "summary": "第三页内容。"
+    },
+    {
+      "index": 19,
+      "role": "tool",
+      "sup": false,
+      "summary": "第四页内容。"
+    },
+    {
+      "index": 20,
+      "role": "user",
+      "sup": false,
+      "summary": "平台自动注入 temporal_context，将本周五解析为具体日期；不是新增真人请求。"
+    },
+    {
+      "index": 21,
+      "role": "assistant",
+      "sup": true,
+      "summary": "说明已找到模板，并询问缺失的客户名称；尚未执行复制或编辑。",
+      "reasoning_content_present": true
+    }
+  ]
+}

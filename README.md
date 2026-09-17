@@ -5,12 +5,14 @@
 - **Docs/Drive Agent RL：** 真实工具环境下的端到端 RL 体系、过程奖励、信用分配和 Skill Verifier 演化。
 - **Pro 主链路 Agent：** 数据合成、长上下文 LoRA SFT、训练反馈驱动的数据选择。
 
-职责口径由项目本人确认：Docs/Drive 项目主导完整 RL 体系及核心机制设计；Pro 项目独立负责数据合成与 LoRA SFT 全流程。两个项目的数据规模和效果指标分别记录，不交叉归因。更新日期：2026-09-16。
+职责口径由项目本人确认：Docs/Drive 项目主导完整 RL 体系及核心机制设计；Pro 项目独立负责数据合成与 LoRA SFT 全流程。两个项目的数据规模和效果指标分别记录，不交叉归因。更新日期：2026-09-17。
 
 ## 项目导航
 
 | 想了解什么 | 文档 |
 |---|---|
+| Check 有哪些维度、如何评分、不同 Rollout 的流程与轮次 | [Check 与 Rollout 代码核查](docs/reference/check-and-rollout.md) |
+| 最终 SFT 有多少轮交互、一条真实样本长什么样 | [SFT 交互统计与逐消息展开](docs/pro/sft-interactions.md) |
 | Docs/Drive RL 总入口 | [Docs/Drive Agent RL](docs/docs-drive-rl/README.md) |
 | Docs/Drive 端到端架构与职责 | [完整项目说明](docs/docs-drive-rl/project.md) |
 | Process Reward、Boundary Advantage、授权与 Skill Evolution | [核心设计](docs/docs-drive-rl/design.md) |

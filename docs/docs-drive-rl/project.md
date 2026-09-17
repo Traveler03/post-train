@@ -95,6 +95,8 @@ flowchart LR
 
 ### 4.3 环境可复现
 
+**2026-09-17 配置核查：** 以下组内复用描述是已实现的可选模式。本次检查的 `train_benchmark_single_qwen35_4b_full.sh` 显式设置 `GRPO_ADK_REUSE_GROUP_ACCOUNT=false`，采用逐轨迹账号获取与准备。历史实验是否共享应按对应启动配置确认，详见 [Rollout 版本差异](../reference/check-and-rollout.md#5-docsdrive-rl-的-rollout-差异)。
+
 每个 Rollout Group 在开始前建立账号世界：
 
 1. 租用一个可用账号。
